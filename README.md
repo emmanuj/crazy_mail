@@ -16,9 +16,9 @@ TODO
 - Implement UIs
 - Finish incomplete classes
 
-Dependencies
-+++++++++++++++++
-JavaMail 1.5.0
+Dependencies<br/>
++++++++++++++++++<br/>
+JavaMail 1.5.0<br/>
 JUnit 1.4
 
 
