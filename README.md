@@ -39,7 +39,8 @@ Download page for JavaMail-1.5.0 http://java.net/projects/javamail/pages/Home<br
 
 JavaMail Documentation http://javamail.java.net/nonav/docs/api/<br/>
 
-<!-- Histats.com  START (html only)-->
+<!-- Histats.com  START (html only) -->
+<!-- Tracks the github page so we can know of other people are viewing our page -->
 <a href="http://www.histats.com" alt="page hit counter" target="_blank" ></a>
 <img  src="http://sstatic1.histats.com/0.gif?2290964&101" alt="web tracker" border="0">
 <!-- Histats.com  END  -->
