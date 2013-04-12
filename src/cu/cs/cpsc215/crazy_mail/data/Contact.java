@@ -85,6 +85,36 @@ public class Contact implements Serializable{
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Contact{" + "firstname=" + firstname + ", lastname=" + lastname + ", contactID=" + contactID + ", email=" + email + ", cellphone=" + cellphone + ", homephone=" + homephone + ", address=" + address + '}';
+    }
+
+   
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Contact other = (Contact) obj;
+        if (this.contactID != other.contactID) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (int) (this.contactID ^ (this.contactID >>> 32));
+        return hash;
+    }
+    
+        
     
     private String firstname;
     private String lastname;
