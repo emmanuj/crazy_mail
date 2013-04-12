@@ -3,7 +3,7 @@ crazy_mail
 
 <h5>A simple email client in Java</h5>
 
-<h5>NOTE<h5>
+<h5>NOTE</h5>
 +++++++++++++<br/>
 - Classes go in their respective packages for example UI classes go in cu.cs.cpsc215.crazy_mail.ui
 - Use JavaDoc style documentation
