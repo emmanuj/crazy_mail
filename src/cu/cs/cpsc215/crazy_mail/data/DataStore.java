@@ -6,7 +6,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import cu.cs.cpsc215.crazy_mail.exceptions.ConfigurationException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
 *@Author Emmanuel John
@@ -17,7 +23,7 @@ import java.util.ArrayList;
 * the datastore must implement Serializable
 */
 
-public class DataStore{
+public final class DataStore{
 
     public Map<Long, Contact> getContacts() {
         return contacts;
@@ -45,7 +51,14 @@ public class DataStore{
     
     private DataStore() {
         this.contacts = new HashMap();
-        
+        try {
+            loadContacts();
+            loadConfig();
+        } catch (IOException ex) {
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static DataStore initDataStore(){
@@ -55,24 +68,54 @@ public class DataStore{
         return store;
     }
     
-    public void loadContacts() throws IOException{
-        //TODO: load all contact objects into map
+    public void loadContacts() throws IOException, ClassNotFoundException{
+        is = new ObjectInputStream(new FileInputStream("cdb.dat"));
+        
+        contacts = (Map<Long, Contact>) is.readObject();
+        
+        
     }
     
     public void saveContact(Contact c) throws IOException{
+        c.setContactID(generateId());
+        
+        contacts.put(c.getContactID(), c);
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                try {
+                    saveContacts(contacts);
+                } catch (IOException ex) {
+                    Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        
+        }).start();
+        
+        
         
     }
     
-    public void saveContacts(ArrayList<Contact> contacts) throws IOException{
+    public void saveContacts(Map<Long,Contact> contacts) throws IOException{
+        os = new ObjectOutputStream(new FileOutputStream("cdb.dat"));
+        
+        os.writeObject(contacts);
         
     }
     
-    public void loadConfig() throws IOException{
-        //get config object from file and store it in the config variable
+    public void loadConfig() throws IOException, ClassNotFoundException{
+        is = new ObjectInputStream(new FileInputStream("fdb.config"));
+        
+        config = (Configuration) is.readObject();
+        
     }
     
     public void saveConfig(Configuration config) throws ConfigurationException,
             IOException{
+        os = new ObjectOutputStream(new FileOutputStream("fdb.config"));
+        
+        os.writeObject(config);
         
     }
     
@@ -100,7 +143,19 @@ public class DataStore{
         return null;
     }
     
+    private long generateId() throws IOException{
+        
+        long idx = 1;
+        if(contacts.size()>=1){
+            idx = contacts.size()+1;
+        }
+        
+        return idx;
+    }
+    
+    private ObjectOutputStream os;
+    private ObjectInputStream is;
     private Map<Long,Contact> contacts;
-    private Configuration config;
+    private Configuration config = new Configuration();
     private static DataStore store;
 }

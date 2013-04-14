@@ -8,10 +8,8 @@ package cu.cs.cpsc215.crazy_mail.mail;
  *
  * @author Emmanuel John
  * 
- * Represents a single mail
- * 
- * 
+ * Represents a mail object e.g file, image etc
  */
-public interface Mail {
+public class Email implements Mail {
     
 }

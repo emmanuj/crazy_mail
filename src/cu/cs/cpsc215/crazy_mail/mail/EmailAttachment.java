@@ -6,10 +6,8 @@ package cu.cs.cpsc215.crazy_mail.mail;
 
 /**
  *
- * @author Emmanuel John
- * 
- * Represents a mail object e.g file, image etc
+ * @author Hermoine
  */
-public class MailObject {
+public class EmailAttachment {
     
 }

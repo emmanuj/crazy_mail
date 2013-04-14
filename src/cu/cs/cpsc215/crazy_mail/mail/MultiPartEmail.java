@@ -6,12 +6,8 @@ package cu.cs.cpsc215.crazy_mail.mail;
 
 /**
  *
- * @author Emmanuel John
- * 
- * Represents a single mail
- * 
- * 
+ * @author Hermoine
  */
-public interface Mail {
+public class MultiPartEmail extends Email {
     
 }
