@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Provider;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -42,23 +45,36 @@ public class MailDemo {
     
     public void sendPlainMessage(String to, String subject, String content) throws AddressException, MessagingException{
         Properties props = new Properties();
-        
-       // props.put("mail.from", "emmylifeline@gmail.com");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        
-        Session session = Session.getInstance(props,null);
-        
-        //System.out.println(session.getTransport().getURLName());
+        props.put("mail.transport.protocol","smtp");
+        props.put("mail.from", "john.emmanuel10@yahoo.com");
+        props.put("mail.smtp.host", "smtp.yahoomail.com");
+        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.starttls.enable","true");
+        props.put("mail.smtp.auth", "true");  // If you need to authenticate
+        // Use the following if you need SSL
+        //props.put("mail.smtp.socketFactory.port", 25);
+        //props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        //props.put("mail.smtp.socketFactory.fallback", "false");
+        Session session = Session.getInstance(props,new Authenticator(){
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication("john.emmanuel10@yahoo.com","unekwu01");
+            }
+        });
+        Provider[] providers = session.getProviders();
+        for(Provider p: providers){
+            System.out.println(p.getProtocol());
+        }
         
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("emmylifeline@gmail.com");
+        msg.setFrom("john.emmanuel10@yahoo.com");
         msg.setSubject(subject);
         msg.setRecipients(Message.RecipientType.TO, to);
         msg.setText(content);
         msg.setSentDate(new Date());
         
-        Transport.send(msg,"emmylifeline@gmail.com","unekwu");
-        
+        Transport.send(msg);
+        System.out.println("mesage sent");
     }
     
 }
