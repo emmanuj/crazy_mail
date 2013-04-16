@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import cu.cs.cpsc215.crazy_mail.exceptions.ConfigurationException;
+import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -33,14 +34,10 @@ public final class DataStore{
         this.contacts = contacts;
     }
 
-    public Configuration getConfig() {
+    public Configuration getConfig(String accountEmail) {
         return config;
     }
 
-    public void setConfig(Configuration config) {
-        this.config = config;
-    }
-    
     public Contact getContact(String email){
         return null;
     }
@@ -53,7 +50,7 @@ public final class DataStore{
         this.contacts = new HashMap();
         try {
             loadContacts();
-            loadConfig();
+            loadConfigurations();
         } catch (IOException ex) {
             Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -75,7 +72,7 @@ public final class DataStore{
         
         
     }
-    
+    //TODO Check if contact exists before saving
     public void saveContact(Contact c) throws IOException{
         c.setContactID(generateId());
         
@@ -104,18 +101,19 @@ public final class DataStore{
         
     }
     
-    public void loadConfig() throws IOException, ClassNotFoundException{
+    public void loadConfigurations() throws IOException, ClassNotFoundException{
         is = new ObjectInputStream(new FileInputStream("fdb.config"));
         
-        config = (Configuration) is.readObject();
+        mailaccounts = (ArrayList) is.readObject();
         
     }
-    
-    public void saveConfig(Configuration config) throws ConfigurationException,
+    //TODO Check if mail account exists before saving
+    public void saveConfiguration(MailAccount mailAcount) throws ConfigurationException,
             IOException{
         os = new ObjectOutputStream(new FileOutputStream("fdb.config"));
         
-        os.writeObject(config);
+        mailaccounts.add(mailAcount);
+        os.writeObject(mailaccounts);
         
     }
     
@@ -156,6 +154,7 @@ public final class DataStore{
     private ObjectOutputStream os;
     private ObjectInputStream is;
     private Map<Long,Contact> contacts;
-    private Configuration config = new Configuration();
+     private Configuration config;
+    private ArrayList<MailAccount> mailaccounts = new ArrayList();
     private static DataStore store;
 }

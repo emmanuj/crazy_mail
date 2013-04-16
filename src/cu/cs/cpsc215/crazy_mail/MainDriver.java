@@ -1,5 +1,6 @@
 package cu.cs.cpsc215.crazy_mail;
 
+import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 
 /**
@@ -9,7 +10,9 @@ import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 public class MainDriver {
 	public static void main(String[] args) {
 		System.out.println("Starting program");
-		MainFrame.init();
+               // DataStore ds = DataStore.initDataStore();//This will happen here so that all contacts are loaded
+		
+                MainFrame.init();
 	}
 
 }
