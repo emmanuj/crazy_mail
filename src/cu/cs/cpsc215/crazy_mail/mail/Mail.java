@@ -14,4 +14,6 @@ package cu.cs.cpsc215.crazy_mail.mail;
  */
 public interface Mail {
     
+    
+    void send();
 }
