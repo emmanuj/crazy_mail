@@ -10,9 +10,9 @@ import cu.cs.cpsc215.crazy_mail.util.MailAccount;
  *
  * @author Hermoine
  */
-public class MultiPartEmail extends Email {
+public class HtmlEmail extends Email {
 
-    public MultiPartEmail(MailAccount mailaccount) {
+    public HtmlEmail(MailAccount mailaccount) {
         super(mailaccount);
     }
     

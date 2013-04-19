@@ -71,8 +71,8 @@ public class DataStoreTest {
         System.out.println("getConfig");
         DataStore instance = null;
         Configuration expResult = null;
-        Configuration result = instance.getConfig();
-        assertEquals(expResult, result);
+//        Configuration result = instance.getConfig();
+       // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -85,7 +85,7 @@ public class DataStoreTest {
         System.out.println("setConfig");
         Configuration config = null;
         DataStore instance = null;
-        instance.setConfig(config);
+//        instance.setConfig(config);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -140,7 +140,7 @@ public class DataStoreTest {
     public void testLoadConfig() throws Exception {
         System.out.println("loadConfig");
         DataStore instance = null;
-        instance.loadConfig();
+//        instance.loadConfig();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -153,7 +153,7 @@ public class DataStoreTest {
         System.out.println("saveConfig");
         Configuration config = null;
         DataStore instance = null;
-        instance.saveConfig(config);
+        //instance.saveConfig(config);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

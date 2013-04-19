@@ -1,7 +1,6 @@
 
 package cu.cs.cpsc215.crazy_mail.util;
 
-import cu.cs.cpsc215.crazy_mail.mail.Protocol;
 import java.io.Serializable;
 
 /**

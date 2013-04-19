@@ -4,6 +4,10 @@
  */
 package cu.cs.cpsc215.crazy_mail.mail;
 
+import java.io.IOException;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 /**
  *
  * @author Emmanuel John
@@ -12,8 +16,8 @@ package cu.cs.cpsc215.crazy_mail.mail;
  * 
  * 
  */
-public interface Mail {
+public interface Mail{
     
     
-    void send();
+    void sendEmail()throws AddressException, MessagingException, IOException;
 }
