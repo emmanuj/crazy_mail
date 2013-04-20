@@ -36,9 +36,21 @@ public class Email implements Mail {
     private String msg;
     private MailAccount mailaccount;
     private String subject;
-
+    private MailListener listener;
     public Email(MailAccount mailaccount) {
         this.mailaccount = mailaccount;
+        to = new ArrayList<InternetAddress>();
+        cc = new ArrayList<InternetAddress>();
+        bcc = new ArrayList<InternetAddress>();
+        
+    }
+
+    public MailListener getListener() {
+        return listener;
+    }
+
+    public void setListener(MailListener listener) {
+        this.listener = listener;
     }
     
     public String getFrom() {
@@ -126,29 +138,31 @@ public class Email implements Mail {
         MimeMessage mimeMsg = new MimeMessage(session);
         mimeMsg.setFrom(confProperties.getProperty("mail.from"));
         mimeMsg.setSubject(this.getSubject());
-        mimeMsg.setRecipients(Message.RecipientType.TO, (Address[]) to.toArray());
+        mimeMsg.setRecipients(Message.RecipientType.TO, convertToArray(to));
         mimeMsg.setText(this.getMsg());
         mimeMsg.setSentDate(new Date());
         
         if(cc.size()>0){
-           mimeMsg.setRecipients(Message.RecipientType.CC, (Address[]) cc.toArray()); 
+           mimeMsg.setRecipients(Message.RecipientType.CC, convertToArray(cc)); 
         }
         
         if(bcc.size()>0){
-           mimeMsg.setRecipients(Message.RecipientType.BCC, (Address[]) bcc.toArray()); 
+           mimeMsg.setRecipients(Message.RecipientType.BCC, convertToArray(bcc)); 
         }
         
-        MailListener m_listener = new MailListener();
+        
+        if(listener ==null)
+            listener =   new MailListener();
+        
         transport = session.getTransport();
         //add transport listener and connection listener
-        transport.addConnectionListener(m_listener);
-        transport.addTransportListener(m_listener);
+        transport.addConnectionListener(listener);
+        transport.addTransportListener(listener);
         
         //connect to the host server
         transport.connect();
         
         try{
-            
             //send message
             transport.sendMessage(mimeMsg, mimeMsg.getAllRecipients());
         }finally{
@@ -157,13 +171,24 @@ public class Email implements Mail {
         }
         
     }
-    
+    public InternetAddress[] convertToArray(ArrayList<InternetAddress> list){
+        InternetAddress [] address = new InternetAddress[list.size()];
+        for(int i=0;i<list.size();i++){
+            address[i]= list.get(i);
+        }
+        
+        return address;
+    }
     public Properties parseConfiguration(MailAccount mailaccount){
         //Retrieve configuration info from mail account
         String fromEmail = mailaccount.getAccountEmail();
-        if(this.from==null||this.from.equals("")){
-            fromEmail = this.getFrom();
+        
+        //'from' passed to email object overrides the default from email in mailaccount configuration
+        if(this.from!=null){
+            if(!this.from.equals(""))
+                fromEmail = this.getFrom();
         }
+        
         boolean auth = mailaccount.isAuth();
         Protocol sendProtocol = mailaccount.getIncomingMail();
         String host = mailaccount.getHost();

@@ -1,17 +1,18 @@
 package cu.cs.cpsc215.crazy_mail.ui;
 
-import com.apple.laf.AquaMenuBarBorder;
+import cu.cs.cpsc215.crazy_mail.util.MailAccount;
+import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -24,7 +25,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 /**
  * 
@@ -111,7 +111,20 @@ public class MainFrame extends JFrame{
             composebtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae){
-                    new EmailTransmissionDlg(MainFrame.this, null);
+                    //TODO this should be changed to loading of mail accounts from the datastore
+                    ArrayList<MailAccount> accounts = new ArrayList();
+                    
+                    MailAccount conf = new MailAccount();
+                    conf.setPort(465);
+                    conf.setAccountEmail("emmylifeline@gmail.com");
+                    conf.setAccountPassword("mmcoofkovqdwezjs");
+                    conf.setHost("smtp.gmail.com");
+                    conf.setIncomingMail(Protocol.SMTP);
+                    conf.setOutgoingmail(Protocol.IMAP);
+                    conf.setFullname("Emmanuel John");
+                    
+                    accounts.add(conf);
+                    EmailTransmissionDlg emailTransmissionDlg = new EmailTransmissionDlg(MainFrame.this, accounts);
                 }
             
             });

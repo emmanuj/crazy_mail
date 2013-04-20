@@ -10,14 +10,14 @@ import java.io.Serializable;
  * 
  */
 public class Configuration implements Serializable {
-    private boolean auth;
+    private boolean auth = true;
     private Protocol outgoingmail;
     private Protocol incomingMail;
     private String host;
-    private boolean debug;
-    private int port;
-    private boolean useTLS;
-    private boolean useSSL;
+    private boolean debug = true;
+    private int port = 465;
+    private boolean useTLS = true;
+    private boolean useSSL = true;
 
     public boolean isAuth() {
         return auth;

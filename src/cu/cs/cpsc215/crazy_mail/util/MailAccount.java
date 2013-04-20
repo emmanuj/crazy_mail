@@ -63,6 +63,12 @@ public class MailAccount extends Configuration implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return fullname + " <"  + accountEmail +  ">";
+    }
+    
     
     
     
