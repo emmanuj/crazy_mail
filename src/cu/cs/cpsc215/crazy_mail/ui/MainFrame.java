@@ -1,19 +1,37 @@
 package cu.cs.cpsc215.crazy_mail.ui;
 
+import com.apple.laf.AquaMenuBarBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+/**
+ * 
+ * @author Kevin Jett
+ * @author Emmanuel John
+ * 
+ */
 public class MainFrame extends JFrame{
 	
 	/**
@@ -31,6 +49,7 @@ public class MainFrame extends JFrame{
 	
 	//Singleton pattern
 	static MainFrame inst;
+        private JLabel statuslabel;
 	public static void init(){
 		inst = new MainFrame();
 		inst.setVisible(true);
@@ -43,40 +62,81 @@ public class MainFrame extends JFrame{
 	
 	//Initial constructor - sets up the window
 	private MainFrame(){
-	   setTitle("Crazy Mail");
-       setSize(760,520);
-       setLocationRelativeTo(null);
-       setDefaultCloseOperation(EXIT_ON_CLOSE);
-       setIcon();
-       makeGlobalElements();
+            
+            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            
+            setTitle("Crazy Mail");
+            setSize(d.width-70,d.height-100);
+            setLocationRelativeTo(null);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setIcon();
+            makeGlobalElements();
 	}
 	
 	//Makes the global elements for the layout
 	private void makeGlobalElements(){
 		mainPanel = new JPanel();
-		leftPanel = new JPanel();
-		footerPanel = new JPanel();
-				
-		makeMenu();
+		
+                leftPanel = createSidePane();
+		footerPanel = createStatusPane();
+		mainPanel.setBorder(new LineBorder(Color.DARK_GRAY));
+                makeMenu();
 		
 		//Positioning
-		add(leftPanel);
+		add(leftPanel, "West");
 		add(footerPanel,BorderLayout.SOUTH);
 		add(mainPanel,BorderLayout.CENTER);
 		add(mainMenu,BorderLayout.NORTH);
 
-		//Temp colors for identification
-		leftPanel.setBackground(new Color(240,240,255));
-		footerPanel.setBackground(new Color(240,255,240));
-		mainPanel.setBackground(new Color(255,240,240));
-		
-		
-		//Placeholder text
-		leftPanel.add(new JLabel("Left panel."));
-		mainPanel.add(new JLabel("Main panel."));
-		footerPanel.add(new JLabel("This is a footer"));
+		leftPanel.setPreferredSize(new Dimension((int)(this.getWidth()*0.25),200));
 
 	}
+        public JPanel createStatusPane(){
+            JPanel panel = new JPanel();
+            panel.setLayout(new FlowLayout(FlowLayout.LEADING));
+            statuslabel = new JLabel("Downloading... 90%");
+            panel.add(statuslabel);
+            
+            return panel;
+        }
+        
+        public JPanel createSidePane(){
+            
+            JPanel main_panel = new JPanel();
+            main_panel.setLayout(new BorderLayout());
+            
+            JPanel n_panel = new JPanel();
+            n_panel.setLayout(new FlowLayout(FlowLayout.LEADING));
+            JButton composebtn = new JButton("New");
+            composebtn.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent ae){
+                    new EmailTransmissionDlg(MainFrame.this, null);
+                }
+            
+            });
+            
+            JButton retrievebtn = new JButton("Get");
+            
+            n_panel.add(composebtn);
+            n_panel.add(retrievebtn);
+            
+            JPanel c_panel = new JPanel();
+            c_panel.setLayout(new BorderLayout());
+            JList<String> list = new JList(new String[]{"Contacts","Inbox",
+                "Sent", "Trash"});
+            list.setBackground(null);
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            list.setFixedCellHeight(50);
+            
+            c_panel.add(new JScrollPane(list));
+            
+            main_panel.add(n_panel, "North");
+            main_panel.add(c_panel);
+            
+            return main_panel;
+        }
+        
 	
 	//Makes the main menu
 	private void makeMenu(){
@@ -127,10 +187,6 @@ public class MainFrame extends JFrame{
 		return mainPanel;
 	}
 	
-	public JPanel getFooterPanel(){
-		return footerPanel;
-	}
-	
 	public JPanel getLeftPanel(){
 		return leftPanel;
 	}
@@ -138,5 +194,13 @@ public class MainFrame extends JFrame{
 	public JMenuBar getMainMenu(){
 		return mainMenu;
 	}
+        
+        public void setStatus(String s){
+            statuslabel.setText(s);
+        }
+        
+        public String getStatus(){
+            return statuslabel.getText();
+        }
 
 }
