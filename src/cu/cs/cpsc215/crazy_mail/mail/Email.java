@@ -53,6 +53,26 @@ public class Email implements Mail {
         return to;
     }
 
+    public ArrayList<InternetAddress> getBcc() {
+        return bcc;
+    }
+
+    public void setBcc(ArrayList<InternetAddress> bcc) {
+        this.bcc = bcc;
+    }
+
+    public ArrayList<InternetAddress> getCc() {
+        return cc;
+    }
+
+    public void setCc(ArrayList<InternetAddress> cc) {
+        this.cc = cc;
+    }
+
+    public void setTo(ArrayList<InternetAddress> to) {
+        this.to = to;
+    }
+
     public String getMsg() {
         return msg;
     }
@@ -176,6 +196,7 @@ public class Email implements Mail {
         if(useSSL){
             props.put("mail.smtp.socketFactory.port", port+"");
             props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+            //props.put("mail.smtp.socketFactory.fallback", "false");
         }
         
         //use TLS?
@@ -187,6 +208,7 @@ public class Email implements Mail {
         if(!useSSL && !useTLS){
             props.put("mail.smtp.socketFactory.port", port+"");
             props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+            //props.put("mail.smtp.socketFactory.fallback", "false");
         }
         
         props.put("mail.user", user);

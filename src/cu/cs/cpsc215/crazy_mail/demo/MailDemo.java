@@ -29,10 +29,6 @@ import javax.mail.util.ByteArrayDataSource;
  */
 public final class MailDemo {
     
-    private String email;
-    private String password;
-    private String fullname;
-    
     public MailDemo(){
         try {
             
