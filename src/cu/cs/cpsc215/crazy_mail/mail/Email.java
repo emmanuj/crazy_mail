@@ -136,7 +136,8 @@ public class Email implements Mail {
         
         
         MimeMessage mimeMsg = new MimeMessage(session);
-        mimeMsg.setFrom(confProperties.getProperty("mail.from"));
+
+        mimeMsg.setFrom(new InternetAddress(confProperties.getProperty("mail.from")));
         mimeMsg.setSubject(this.getSubject());
         mimeMsg.setRecipients(Message.RecipientType.TO, convertToArray(to));
         mimeMsg.setText(this.getMsg());

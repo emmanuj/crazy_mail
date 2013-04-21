@@ -11,6 +11,9 @@ import java.io.Serializable;
  */
 public class Configuration implements Serializable {
     private boolean auth = true;
+
+	private static final long serialVersionUID = 1228598296735827634L;
+
     private Protocol outgoingmail;
     private Protocol incomingMail;
     private String host;

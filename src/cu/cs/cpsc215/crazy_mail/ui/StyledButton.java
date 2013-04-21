@@ -1,11 +1,6 @@
 
 package cu.cs.cpsc215.crazy_mail.ui;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.swing.JButton;
 
 /**
@@ -16,7 +11,9 @@ import javax.swing.JButton;
  */
 public class StyledButton extends JButton{
 
-    StyledButton(String string) {
+	private static final long serialVersionUID = -3380440348017386727L;
+
+	StyledButton(String string) {
         super(string);
     }
    

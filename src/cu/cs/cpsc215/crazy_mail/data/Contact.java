@@ -6,15 +6,11 @@ package cu.cs.cpsc215.crazy_mail.data;
 *
 */
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 public class Contact implements Serializable{
 
-    public Contact(){
+	private static final long serialVersionUID = 232602762260755650L;
+	public Contact(){
         
     }
     public Contact(String email) {

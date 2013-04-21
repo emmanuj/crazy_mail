@@ -69,7 +69,7 @@ public final class MailDemo {
         
        
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("john.emmanuel10@yahoo.com");
+        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         msg.setText(content);
@@ -110,7 +110,7 @@ public final class MailDemo {
         trans.addTransportListener(listener);
         
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("john.emmanuel10@yahoo.com");
+        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         //msg.setText(content);
@@ -162,7 +162,7 @@ public final class MailDemo {
         
        
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("john.emmanuel10@yahoo.com");
+        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         

@@ -1,13 +1,11 @@
 package cu.cs.cpsc215.crazy_mail;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
-import cu.cs.cpsc215.crazy_mail.ui.EmailTransmissionDlg;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *@author Kevin Jett
@@ -35,7 +33,14 @@ public class MainDriver {
                         MainFrame.init();
                     }
                 });
+		shutdown();
                 
+	}
+	
+	public static void shutdown()
+	{
+		DataStore.get().saveAll();
+		System.out.println("Shutting down");
 	}
 
 }
