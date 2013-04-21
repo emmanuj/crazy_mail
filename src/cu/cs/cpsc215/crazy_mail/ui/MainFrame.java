@@ -1,5 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.ui;
 
+import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 
@@ -171,9 +172,10 @@ public class MainFrame extends JFrame{
 		JMenuItem about = new JMenuItem("About");
 		JMenuItem exit = new JMenuItem("Exit");
 		JMenuItem stuff = new JMenuItem("Stuff");
-		JMenuItem editConfig = new JMenuItem("Edit Configuration");
+		JMenuItem viewAccounts = new JMenuItem("Configurations");
+		JMenuItem addAccount = new JMenuItem("Add Configuration");
 		
-		editConfig.addActionListener(new ActionListener(){
+		addAccount.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				new ConfigurationDlg(MainFrame.getInst(),new Configuration());
 				
@@ -181,11 +183,10 @@ public class MainFrame extends JFrame{
 			
 		});
 
-		fileMenu.add(about);
 		fileMenu.add(exit);
-		helpMenu.add(stuff);
-		configMenu.add(editConfig);
-
+		helpMenu.add(about);
+		configMenu.add(addAccount);
+		configMenu.add(viewAccounts);
 		mainMenu.add(fileMenu);
 		mainMenu.add(configMenu);
 		mainMenu.add(helpMenu);

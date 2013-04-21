@@ -11,7 +11,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 import cu.cs.cpsc215.crazy_mail.data.Contact;
@@ -47,20 +49,22 @@ public class ContactEditingDlg extends JDialog{
 		JLabel addressLabelState = new JLabel("State or Territory");
 		
 		//And the fields...
-		firstNameField = new JTextField(60);
-		lastNameField = new JTextField(60);
-		emailField = new JTextField(60);
-		cellField = new JTextField(60);
-		homeField = new JTextField(60);
-		addressFieldStreet = new JTextField(60);
-		addressFieldCity = new JTextField(60);
-		addressFieldZip = new JTextField(60);
+		firstNameField = new JTextField(50);
+		lastNameField = new JTextField(50);
+		emailField = new JTextField(50);
+		cellField = new JTextField(50);
+		homeField = new JTextField(50);
+		addressFieldStreet = new JTextField(50);
+		addressFieldCity = new JTextField(50);
+		addressFieldZip = new JTextField(50);
 		
 		
 		addressStateDropdown = new JComboBox<String>(Address.getStates());
+
 		
 		if(contact!=null)
 		{
+			setTitle("Editing Contact");
 			//Set the text
 			firstNameField.setText(contact.getFirstname());
 			lastNameField.setText(contact.getLastname());
@@ -74,7 +78,12 @@ public class ContactEditingDlg extends JDialog{
 				addressFieldStreet.setText(a.getStreet());
 				addressFieldCity.setText(a.getCity());
 				addressFieldZip.setText(a.getZip());
+				addressStateDropdown.setSelectedItem(contact.getAddress().getState());
 			}
+		}
+		else
+		{
+			setTitle("New Contact");
 		}
 		
 		//Add everything to our panel
@@ -118,7 +127,7 @@ public class ContactEditingDlg extends JDialog{
 		
 		//Add panel to the dialog, and set the window stuff
 		add(n_panel);
-		setTitle("Editing contact");;
+		
         setSize(600,400);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

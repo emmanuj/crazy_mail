@@ -28,6 +28,21 @@ import java.util.logging.Logger;
 
 public final class DataStore{
 
+	//Singleton
+	public static DataStore initDataStore(){
+	    if(!Validator.validateNotNull(store))
+	        store = new DataStore();
+	    
+	    return store;
+	}
+	public static DataStore get(){ //short hand
+		return initDataStore();
+	}
+	    
+	//Getters
+	public ArrayList<MailAccount> getAccounts(){
+		return mailaccounts;
+	}
     public ArrayList<Contact> getContacts() {
         return contacts;
     }
@@ -70,18 +85,7 @@ public final class DataStore{
             Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static DataStore initDataStore(){
-        if(!Validator.validateNotNull(store))
-            store = new DataStore();
         
-        return store;
-    }
-    
-    public static DataStore get(){ //short hand
-    	return initDataStore();
-    }
-    
     public void loadContacts() throws IOException, ClassNotFoundException{
         is = new ObjectInputStream(new FileInputStream("cdb.dat"));
         
@@ -134,6 +138,10 @@ public final class DataStore{
         
     }
     
+    public void saveAll()
+    {
+    	
+    }
     public ArrayList<Contact> findAllByEmail(String email){
         return null;
     }

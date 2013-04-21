@@ -1,5 +1,6 @@
 package cu.cs.cpsc215.crazy_mail;
 
+import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,14 @@ public class MainDriver {
                         MainFrame.init();
                     }
                 });
+		shutdown();
                 
+	}
+	
+	public static void shutdown()
+	{
+		DataStore.get().saveAll();
+		System.out.println("Shutting down");
 	}
 
 }

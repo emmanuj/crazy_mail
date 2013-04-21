@@ -49,8 +49,10 @@ public class EmailTransmissionDlg extends JDialog {
     private JTextField ccfield;
     private JTextField tofield;
     private JComboBox fromcbox;
+    
+    private static int count = 0;
     public EmailTransmissionDlg(MainFrame parent, ArrayList<MailAccount> mailaccounts){
-        
+        count++;
         this.parent = parent;
         this.mailaccounts = mailaccounts;
         
@@ -71,9 +73,20 @@ public class EmailTransmissionDlg extends JDialog {
         
         setTitle("New Message");
         setSize(parent.getWidth()-70,parent.getHeight()-50);
+        
         setLocationRelativeTo(parent);
+        setLocation(32 + count*24,32 + count*24); //Don't want the windows to be on top of each other
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
+        
+        //Special closer
+        final EmailTransmissionDlg t = this;
+        addWindowListener(new WindowAdapter() {
+        	public void windowClosing(WindowEvent we) {
+        	t.dispose();
+        	count--;
+        	}
+        });
     }
     private JPanel createButtonPanel(){
         JPanel btnPanel = new JPanel();
@@ -196,10 +209,11 @@ public class EmailTransmissionDlg extends JDialog {
         EmailTransmissionDlg.this.dispose();
     }
     
-    public static void main(String args[]){
-        EmailTransmissionDlg emailTransmissionDlg = new EmailTransmissionDlg(null,null); //for testing only. remove this line
+    public void setRecepient(String email)
+    {
+    	tofield.setText(email);
     }
-    
+
     
     
 }

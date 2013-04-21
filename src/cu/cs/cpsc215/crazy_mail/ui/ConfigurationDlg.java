@@ -25,6 +25,7 @@ public class ConfigurationDlg extends JDialog {
 	
 	public ConfigurationDlg(MainFrame parent, Configuration configuration)
 	{
+
 		this.parent = parent;
 		this.config = configuration;
 		this.setModal(true);

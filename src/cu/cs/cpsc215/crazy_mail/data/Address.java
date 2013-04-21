@@ -63,6 +63,18 @@ public class Address implements Serializable{
     	//return "Address{" + "street=" + street + ", city=" + city + ", state=" + state + ", zip=" + zip + '}';
     }
     
+    public String getFormattedString(){
+    	String return_string = "<html>";
+    	return_string+=street;
+    	return_string+="<br/>";
+    	return_string+=city;
+    	if(!city.equals(""))
+    	{
+    		return_string+=", ";
+    	}
+    	return_string+=state+" "+zip;
+    	return return_string;
+    }
     public static String[] getStates(){
     	String[] states = 
     		{ "", "Alabama", "Alaska", "American Samoa", "Arizona","Arkansas",
