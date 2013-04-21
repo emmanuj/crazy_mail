@@ -1,7 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.demo;
 
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
-import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -13,7 +12,6 @@ import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
-import javax.mail.Provider;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -47,6 +45,9 @@ public final class MailDemo {
     
     public static void main(String argv[]){
         new MailDemo();
+    }
+    public void retrieveEmail(){
+        
     }
     
     public void sendPlainMessage(String to, String subject, String content) throws AddressException, MessagingException, IOException{
