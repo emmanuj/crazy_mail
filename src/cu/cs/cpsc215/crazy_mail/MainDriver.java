@@ -33,7 +33,6 @@ public class MainDriver {
                         MainFrame.init();
                     }
                 });
-		shutdown();
                 
 	}
 	

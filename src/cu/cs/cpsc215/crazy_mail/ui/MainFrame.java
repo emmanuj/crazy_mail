@@ -1,5 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.ui;
 
+import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
@@ -11,6 +12,8 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -82,6 +85,15 @@ public class MainFrame extends JFrame{
             makeGlobalElements();
             
             switchState(ViewContactsState.get());
+            
+            final MainFrame t = this;
+            this.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    t.dispose();
+                    MainDriver.shutdown();
+                }
+
+            });
 	}
 	
 	//Makes the global elements for the layout
