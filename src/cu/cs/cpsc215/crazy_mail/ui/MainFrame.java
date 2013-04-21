@@ -152,7 +152,7 @@ public class MainFrame extends JFrame{
             list.setBackground(null);
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setFixedCellHeight(50);
-            
+            list.setSelectedIndex(0);
             c_panel.add(new JScrollPane(list));
             
             main_panel.add(n_panel, "North");

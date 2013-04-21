@@ -15,9 +15,14 @@ crazy_mail
 	
 <li> Update this wiki</li>
 <li>Create a tasks list</li>
-<li> Implement UIs</li>
-<li>Finish incomplete classes</li>
-
+<li> Create Inbox, Send states</li>
+<li> Add actions to list menu </li>
+<li> Datastore class modifications</li>
+<li> Create About UI </li>
+<li> Error handling for sending mails </li>
+<li> Validate mail account</li>
+<li> Status Bar </li>
+<li> Run tests </li>
 </ul>
 
 <h5>Dependencies</h5>
@@ -26,7 +31,7 @@ crazy_mail
 	
 <li> JavaMail 1.5.0</li>
 <li>JUnit 4.0</li>
-
+<li>MigLayout</li>
 
 </ul>
 
@@ -36,7 +41,7 @@ crazy_mail
 +++++++++++++++++++++<br/>
 
 Download page for JavaMail-1.5.0 http://java.net/projects/javamail/pages/Home<br/>
-
+MigLayout http://www.miglayout.com/
 JavaMail Documentation http://javamail.java.net/nonav/docs/api/<br/>
 
 <!-- Histats.com  START (html only) -->

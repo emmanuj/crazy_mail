@@ -44,8 +44,8 @@ public class DataStoreTest {
         System.out.println("getContacts");
         DataStore instance = null;
         Map expResult = null;
-        Map result = instance.getContacts();
-        assertEquals(expResult, result);
+        //Map result = instance.getContacts();
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -58,7 +58,7 @@ public class DataStoreTest {
         System.out.println("setContacts");
         Map<Long, Contact> contacts = null;
         DataStore instance = null;
-        instance.setContacts(contacts);
+        //instance.setContacts(contacts);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -114,8 +114,8 @@ public class DataStoreTest {
         long id = 0L;
         DataStore instance = null;
         Contact expResult = null;
-        Contact result = instance.getContact(id);
-        assertEquals(expResult, result);
+        //Contact result = instance.getContact(id);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

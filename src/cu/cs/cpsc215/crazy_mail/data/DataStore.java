@@ -129,11 +129,14 @@ public final class DataStore{
         
     }
     //TODO Check if mail account exists before saving
-    public void saveConfiguration(MailAccount mailAcount) throws ConfigurationException,
+    public void saveConfiguration(MailAccount mailAccount) throws ConfigurationException,
             IOException{
+        if(mailaccounts.contains(mailAccount))
+            return;
+
         os = new ObjectOutputStream(new FileOutputStream("fdb.config"));
         
-        mailaccounts.add(mailAcount);
+        mailaccounts.add(mailAccount);
         os.writeObject(mailaccounts);
         
     }
