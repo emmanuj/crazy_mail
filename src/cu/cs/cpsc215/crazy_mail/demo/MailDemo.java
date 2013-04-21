@@ -1,7 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.demo;
 
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
-import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -13,7 +12,6 @@ import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
-import javax.mail.Provider;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -68,7 +66,7 @@ public final class MailDemo {
         
        
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("john.emmanuel10@yahoo.com");
+        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         msg.setText(content);
@@ -109,7 +107,7 @@ public final class MailDemo {
         trans.addTransportListener(listener);
         
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("john.emmanuel10@yahoo.com");
+        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         //msg.setText(content);
@@ -161,7 +159,7 @@ public final class MailDemo {
         
        
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom("john.emmanuel10@yahoo.com");
+        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         

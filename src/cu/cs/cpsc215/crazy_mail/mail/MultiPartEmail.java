@@ -18,6 +18,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
@@ -61,7 +62,7 @@ public class MultiPartEmail extends Email {
         MimeMultipart multipart_msg = new MimeMultipart();
         
         MimeMessage mimeMsg = new MimeMessage(session);
-        mimeMsg.setFrom(confProperties.getProperty("mail.from"));
+        mimeMsg.setFrom(new InternetAddress(confProperties.getProperty("mail.from")));
         mimeMsg.setSubject(this.getSubject());
         mimeMsg.setRecipients(Message.RecipientType.TO, (Address[]) getTo().toArray());
         //mimeMsg.setText(this.getMsg());

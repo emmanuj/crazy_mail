@@ -2,6 +2,7 @@ package cu.cs.cpsc215.crazy_mail.ui;
 
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +13,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -26,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
+
+import cu.cs.cpsc215.crazy_mail.util.Configuration;
 /**
  * 
  * @author Kevin Jett
@@ -49,12 +54,14 @@ public class MainFrame extends JFrame{
 	
 	//Singleton pattern
 	static MainFrame inst;
-        private JLabel statuslabel;
+    private JLabel statuslabel;
+    private HashMap<String,FrameState> stateMap;
+    private FrameState currentState = null;
+    
 	public static void init(){
 		inst = new MainFrame();
 		inst.setVisible(true);
 		inst.sizeGlobalElements(); //TODO: make this be called on every resize
-		
 	}
 	public static MainFrame getInst(){
 		return inst;
@@ -64,6 +71,7 @@ public class MainFrame extends JFrame{
 	private MainFrame(){
             
             Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            stateMap = new HashMap<String,FrameState>();
             
             setTitle("Crazy Mail");
             setSize(d.width-70,d.height-100);
@@ -71,13 +79,15 @@ public class MainFrame extends JFrame{
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setIcon();
             makeGlobalElements();
+            
+            switchState(ViewContactsState.get());
 	}
 	
 	//Makes the global elements for the layout
 	private void makeGlobalElements(){
 		mainPanel = new JPanel();
-		
-                leftPanel = createSidePane();
+		mainPanel.setLayout(new BorderLayout());
+        leftPanel = createSidePane();
 		footerPanel = createStatusPane();
 		mainPanel.setBorder(new LineBorder(Color.DARK_GRAY));
                 makeMenu();
@@ -91,14 +101,14 @@ public class MainFrame extends JFrame{
 		leftPanel.setPreferredSize(new Dimension((int)(this.getWidth()*0.25),200));
 
 	}
-        public JPanel createStatusPane(){
-            JPanel panel = new JPanel();
-            panel.setLayout(new FlowLayout(FlowLayout.LEADING));
-            statuslabel = new JLabel("Downloading... 90%");
-            panel.add(statuslabel);
-            
-            return panel;
-        }
+	public JPanel createStatusPane(){
+	    JPanel panel = new JPanel();
+	    panel.setLayout(new FlowLayout(FlowLayout.LEADING));
+	    statuslabel = new JLabel("Downloading... 90%");
+	    panel.add(statuslabel);
+	    
+	    return panel;
+	}
         
         public JPanel createSidePane(){
             
@@ -149,7 +159,6 @@ public class MainFrame extends JFrame{
             
             return main_panel;
         }
-        
 	
 	//Makes the main menu
 	private void makeMenu(){
@@ -164,6 +173,13 @@ public class MainFrame extends JFrame{
 		JMenuItem stuff = new JMenuItem("Stuff");
 		JMenuItem editConfig = new JMenuItem("Edit Configuration");
 		
+		editConfig.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				new ConfigurationDlg(MainFrame.getInst(),new Configuration());
+				
+			}
+			
+		});
 
 		fileMenu.add(about);
 		fileMenu.add(exit);
@@ -208,12 +224,45 @@ public class MainFrame extends JFrame{
 		return mainMenu;
 	}
         
-        public void setStatus(String s){
-            statuslabel.setText(s);
-        }
-        
-        public String getStatus(){
-            return statuslabel.getText();
-        }
+    public void setStatus(String s){
+        statuslabel.setText(s);
+    }
+    
+    public String getStatus(){
+        return statuslabel.getText();
+    }
+    
+    public void switchState(FrameState state){
+    	
+    	//If state is unchanged, do nothing
+    	if(state == currentState)
+    	{
+    		return;
+    	}
+    	
+    	//If there is a current state, remove and hide it
+    	if(currentState != null)
+    	{
+    		mainPanel.removeAll();
+    		currentState.onHide();
+    	}
+    	
+    	//Try to retrieve state from existing map
+    	if(stateMap.containsKey(state.getName()))
+    	{
+    		currentState = stateMap.get(state.getName());
+    	}
+    	else //If it's not there, put it in the map
+    	{
+    		stateMap.put(state.getName(),state);
+    		currentState = state;
+    	}
+    	
+    	//Add to main panel
+		mainPanel.add(currentState.getPanel());
+		currentState.onShow();
+    	mainPanel.setBackground(new Color(240,255,240));
+    		
+    }
 
 }
