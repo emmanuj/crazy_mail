@@ -148,6 +148,7 @@ public class ViewContactsState implements FrameState{
 					} catch (IOException e) {
 					}
 					updateTable();
+					buttonMediator.setHasSelectedRow(false);
 				}
 			}
 		});
