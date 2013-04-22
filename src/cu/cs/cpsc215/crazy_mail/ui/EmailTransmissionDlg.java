@@ -8,6 +8,7 @@ import cu.cs.cpsc215.crazy_mail.mail.Email;
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -55,7 +56,7 @@ public class EmailTransmissionDlg extends JDialog {
         count++;
         this.parent = parent;
         this.mailaccounts = mailaccounts;
-        
+
         JPanel n_panel = new JPanel();
         n_panel.setLayout(new BorderLayout());
         n_panel.add(createButtonPanel(),"North");

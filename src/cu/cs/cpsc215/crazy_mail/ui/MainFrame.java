@@ -2,6 +2,7 @@ package cu.cs.cpsc215.crazy_mail.ui;
 
 import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
+import cu.cs.cpsc215.crazy_mail.ui.contacts.ViewContactsState;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 
@@ -187,21 +188,33 @@ public class MainFrame extends JFrame{
 		JMenuItem viewAccounts = new JMenuItem("Configurations");
 		JMenuItem addAccount = new JMenuItem("Add Configuration");
 		
-		addAccount.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				new ConfigurationDlg(MainFrame.getInst(),new Configuration());
-				
-			}
-			
-		});
-
 		fileMenu.add(exit);
 		helpMenu.add(about);
-		configMenu.add(addAccount);
 		configMenu.add(viewAccounts);
+		configMenu.add(addAccount);
 		mainMenu.add(fileMenu);
 		mainMenu.add(configMenu);
 		mainMenu.add(helpMenu);
+		
+		//Menu listeners
+		addAccount.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				new ConfigurationDlg(MainFrame.getInst(),new Configuration());
+			}
+			
+		});
+		
+		viewAccounts.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				new ViewConfigurationsDlg(MainFrame.getInst());
+			}
+		});
+		exit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				MainFrame.getInst().dispose();
+				MainDriver.shutdown();
+			}
+		});
 	}
 	
 	/*Does any sizing on the global elements. Currently used to set the bounds for the left panel.

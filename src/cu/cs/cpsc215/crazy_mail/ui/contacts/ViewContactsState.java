@@ -1,7 +1,8 @@
-package cu.cs.cpsc215.crazy_mail.ui;
+package cu.cs.cpsc215.crazy_mail.ui.contacts;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,9 @@ import javax.swing.table.AbstractTableModel;
 
 import cu.cs.cpsc215.crazy_mail.data.Contact;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
+import cu.cs.cpsc215.crazy_mail.ui.EmailTransmissionDlg;
+import cu.cs.cpsc215.crazy_mail.ui.FrameState;
+import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 
@@ -83,10 +87,10 @@ public class ViewContactsState implements FrameState{
 		footerPanel.add(deleteButton);
 		
 		headerLabel.setText("Contacts");
-		headerLabel.setFont(new Font("Serif", Font.BOLD, 24));
-		
-		Border paddingBorder = BorderFactory.createEmptyBorder(5,5,5,5);
-		infoLabel.setBorder(paddingBorder);
+		Border blank5 = BorderFactory.createEmptyBorder(5,5,5,5);
+		headerLabel.setFont(new Font("Sans Serif", Font.PLAIN, 24));
+		headerLabel.setBorder(blank5);
+		infoLabel.setBorder(blank5);
 
 		//If no contacts were loaded, display a message
 		if(DataStore.get().getContacts().size() == 0)
@@ -95,7 +99,7 @@ public class ViewContactsState implements FrameState{
 		}
 		else
 		{
-			infoLabel.setText("View your contacts here.");
+			infoLabel.setText("Double click a contact to send them an email.");
 		}
 		
 		//Table handler
@@ -104,6 +108,7 @@ public class ViewContactsState implements FrameState{
 				buttonMediator.setHasSelectedRow(true);
 
 				if (e.getClickCount() == 2) {
+					table.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 					JTable target = (JTable)e.getSource();
 					int row = target.getSelectedRow();
 					ArrayList<MailAccount> accounts = new ArrayList();
@@ -121,6 +126,7 @@ public class ViewContactsState implements FrameState{
 					String email = DataStore.get().getContacts().get(row).getEmail();
 					EmailTransmissionDlg dlg = new EmailTransmissionDlg(MainFrame.getInst(),accounts);
 					dlg.setRecepient(email);
+					table.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				 }
 			   }
 			});

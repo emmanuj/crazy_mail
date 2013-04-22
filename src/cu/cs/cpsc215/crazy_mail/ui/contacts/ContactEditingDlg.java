@@ -1,4 +1,4 @@
-package cu.cs.cpsc215.crazy_mail.ui;
+package cu.cs.cpsc215.crazy_mail.ui.contacts;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 import cu.cs.cpsc215.crazy_mail.data.Contact;
+import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
 
 public class ContactEditingDlg extends JDialog{

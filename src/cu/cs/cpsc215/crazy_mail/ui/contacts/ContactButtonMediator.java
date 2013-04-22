@@ -1,4 +1,4 @@
-package cu.cs.cpsc215.crazy_mail.ui;
+package cu.cs.cpsc215.crazy_mail.ui.contacts;
 
 import javax.swing.JButton;
 
