@@ -27,7 +27,7 @@ public class ContactEditingDlg extends JDialog{
 	
 	private JTextField firstNameField,lastNameField,emailField,cellField,homeField;
 	private JTextField addressFieldStreet,addressFieldCity, addressFieldZip;
-	private JComboBox addressStateDropdown;
+	private JComboBox<String> addressStateDropdown;
 	public ContactEditingDlg(MainFrame parent, Contact contact){
 		this.parent = parent;
 		this.contact = contact;
@@ -60,7 +60,7 @@ public class ContactEditingDlg extends JDialog{
 		addressFieldZip = new JTextField(50);
 		
 		
-		addressStateDropdown = new JComboBox(Address.getStates());
+		addressStateDropdown = new JComboBox<String>(Address.getStates());
 
 		
 		if(contact!=null)
