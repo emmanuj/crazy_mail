@@ -6,7 +6,6 @@ package cu.cs.cpsc215.crazy_mail.data;
 *
 */
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Address implements Serializable{
 	private static final long serialVersionUID = 4267012014955078038L;
@@ -91,14 +90,6 @@ public class Address implements Serializable{
     	return states;
     }
 
-    public int hashCode() {
-        int hash = 3;
-        hash = 41 * hash + Objects.hashCode(this.street);
-        hash = 41 * hash + Objects.hashCode(this.city);
-        hash = 41 * hash + Objects.hashCode(this.state);
-        hash = 41 * hash + Objects.hashCode(this.zip);
-        return hash;
-    }
 
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -108,16 +99,16 @@ public class Address implements Serializable{
             return false;
         }
         final Address other = (Address) obj;
-        if (!Objects.equals(this.street, other.street)) {
+        if (street.equals(other.street)) {
             return false;
         }
-        if (!Objects.equals(this.city, other.city)) {
+        if (city.equals( other.city)) {
             return false;
         }
-        if (!Objects.equals(this.state, other.state)) {
+        if (state.equals( other.state)) {
             return false;
         }
-        if (!Objects.equals(this.zip, other.zip)) {
+        if (zip.equals(other.zip)) {
             return false;
         }
         return true;

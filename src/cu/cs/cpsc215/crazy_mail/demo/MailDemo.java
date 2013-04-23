@@ -34,8 +34,11 @@ public final class MailDemo {
             //sendHTMLWithAttachment("emmylifeline@gmail.com", "Yes it works", "This is a test message from JavaMail");
         } catch (AddressException ex) {
             Logger.getLogger(MailDemo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MessagingException | IOException ex) {
+        } catch (MessagingException ex) {
             Logger.getLogger(MailDemo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(IOException ex)
+        {
+        	Logger.getLogger(MailDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

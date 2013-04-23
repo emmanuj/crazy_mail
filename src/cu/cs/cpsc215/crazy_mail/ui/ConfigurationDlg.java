@@ -43,8 +43,8 @@ public class ConfigurationDlg extends JDialog {
         JTextField hostField = new JTextField(60);
         JTextField portField = new JTextField(60);
         String[] options = {"POP","IMAP","MAPI"};
-        JComboBox<String> incomingOptions = new JComboBox<String>(options);
-        JComboBox<String> outgoingOptions = new JComboBox<String>(options);
+        JComboBox incomingOptions = new JComboBox(options);
+        JComboBox outgoingOptions = new JComboBox(options);
         JCheckBox tlsBox = new JCheckBox();
         JCheckBox sslBox = new JCheckBox();
         

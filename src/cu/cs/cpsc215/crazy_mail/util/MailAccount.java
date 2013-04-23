@@ -2,7 +2,6 @@
 package cu.cs.cpsc215.crazy_mail.util;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  *
@@ -43,12 +42,6 @@ public class MailAccount extends Configuration implements Serializable {
         this.fullname = fullname;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.accountEmail);
-        return hash;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -59,7 +52,7 @@ public class MailAccount extends Configuration implements Serializable {
             return false;
         }
         final MailAccount other = (MailAccount) obj;
-        if (!Objects.equals(this.accountEmail, other.accountEmail)) {
+        if (accountEmail.equals(other.accountEmail)) {
             return false;
         }
         return true;

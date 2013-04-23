@@ -160,7 +160,7 @@ public class MainFrame extends JFrame{
             
             JPanel c_panel = new JPanel();
             c_panel.setLayout(new BorderLayout());
-            JList<String> list = new JList(new String[]{"Contacts","Inbox",
+            JList list = new JList(new String[]{"Contacts","Inbox",
                 "Sent", "Trash"});
             list.setBackground(null);
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
