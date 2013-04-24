@@ -86,7 +86,7 @@ public class MainFrame extends JFrame{
             stateMap = new HashMap<String,FrameState>();
             
             setTitle("Crazy Mail");
-            setSize(d.width-70,d.height-100);
+            setSize(d.width-300,d.height-300);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setIcon();

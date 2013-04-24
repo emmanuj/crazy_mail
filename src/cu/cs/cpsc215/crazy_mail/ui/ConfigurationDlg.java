@@ -1,5 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
+import cu.cs.cpsc215.crazy_mail.mail.Email;
 import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
@@ -34,6 +36,7 @@ public class ConfigurationDlg extends JDialog {
 	private JPasswordField passwordField;
     private JComboBox incomingOptions, outgoingOptions;
     private JCheckBox tlsBox, sslBox;
+    private JLabel validateLabel;
 	public ConfigurationDlg(ViewConfigurationsDlg dlg, MailAccount configuration)
 	{
 		super(MainFrame.getInst());
@@ -69,7 +72,7 @@ public class ConfigurationDlg extends JDialog {
         sslBox.setSelected(true);
         sslBox.setEnabled(false);
         JButton button = new JButton();
-        
+        validateLabel = new JLabel("");
         //Read in values
         if(configuration!=null)
         {
@@ -110,7 +113,8 @@ public class ConfigurationDlg extends JDialog {
         n_panel.add(useSSL);
         n_panel.add(sslBox);
         
-        n_panel.add(button,"x 130");
+        n_panel.add(button,"x 130, wrap");
+        n_panel.add(validateLabel);
         
         final ConfigurationDlg t = this;
 
@@ -157,7 +161,9 @@ public class ConfigurationDlg extends JDialog {
         	
         });
         
-        add(n_panel,"Center");
+        //Message for adding clemson accounts
+        this.add(new JLabel("<html><div width='300px' style='padding:5px; padding-bottom:0px; margin:auto; text-align:center;'>To connect to a Clemson account, fill in your email and <b>gmail</b> password, then set the mailhost to mailhost.cs.clemson.edu<hr/></div></html>"),"North");
+        this.add(n_panel,"Center");
         if(config == null)
         {
         	setTitle("New Configuration");
@@ -166,10 +172,11 @@ public class ConfigurationDlg extends JDialog {
         {
         	setTitle("Editing Configuration");
         }
-        pack();
-        setLocationRelativeTo(MainFrame.getInst());
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setVisible(true);
+        this.pack();
+        this.setLocationRelativeTo(MainFrame.getInst());
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
 	}
 	
 	private MailAccount validateAndBuild()
