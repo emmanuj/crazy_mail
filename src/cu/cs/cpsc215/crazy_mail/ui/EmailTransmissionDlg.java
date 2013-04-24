@@ -60,7 +60,7 @@ public class EmailTransmissionDlg extends JDialog {
     	//If there are no accounts, spit out a message and close
     	if(DataStore.get().getAccounts().size()==0)
     	{
-    		JOptionPane.showMessageDialog(MainFrame.getInst(),"You must make an account before you can send any messages.");
+    		JOptionPane.showMessageDialog(MainFrame.getInst(),"You must make an account before you can send any messages.","Error",JOptionPane.ERROR_MESSAGE);
     		this.dispose();
     		return;
     	}
@@ -223,7 +223,10 @@ public class EmailTransmissionDlg extends JDialog {
     
     public void setRecepient(String email)
     {
-    	tofield.setText(email);
+    	if(tofield!=null)
+    	{
+    		tofield.setText(email);
+    	}
     }
 
     
