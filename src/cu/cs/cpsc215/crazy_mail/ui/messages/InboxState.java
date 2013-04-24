@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 
 /**
  *
- * @author emmanuj
+ * @author Emmanuel
  */
 public class InboxState implements FrameState {
     private JPanel main_panel;

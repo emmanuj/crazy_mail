@@ -15,6 +15,7 @@ import javax.mail.event.TransportEvent;
 import javax.mail.event.TransportListener;
 
 /**
+ * 
  * @author Emmanuel
  */
 public class MailListener implements TransportListener, ConnectionListener {

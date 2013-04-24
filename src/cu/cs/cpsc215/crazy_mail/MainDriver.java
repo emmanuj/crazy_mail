@@ -13,8 +13,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
- *@author Kevin Jett
+ * 
+ * @author Kevin Jett
  * @author Emmanuel John
+ * 
  * Main Driver. 
  *This is separated from the window and main frame to allow for easy debugging of other components.
  **/

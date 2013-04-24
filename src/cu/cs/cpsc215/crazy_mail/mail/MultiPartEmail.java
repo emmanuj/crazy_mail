@@ -25,7 +25,7 @@ import javax.mail.internet.MimeMultipart;
 
 /**
  *
- * @author Hermoine
+ * @author Emmanuel
  */
 public class MultiPartEmail extends Email {
     

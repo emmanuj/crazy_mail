@@ -24,6 +24,11 @@ import javax.swing.JSplitPane;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
+/**
+ *
+ * @author Kevin Jett
+*/
+
 public class ViewConfigurationsDlg extends JDialog{
 	private static final long serialVersionUID = -939507760895083297L;
 	private JPanel mainPanel;

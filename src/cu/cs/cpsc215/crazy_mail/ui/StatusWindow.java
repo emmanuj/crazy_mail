@@ -21,7 +21,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  *
- * @author Hermoine
+ * @author Emmanuel
  */
 public class StatusWindow extends JWindow {
 

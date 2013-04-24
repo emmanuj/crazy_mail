@@ -18,6 +18,11 @@ import cu.cs.cpsc215.crazy_mail.data.Contact;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
 
+/**
+ * 
+ * @author Kevin Jett
+*/
+
 public class ContactEditingDlg extends JDialog{
 	private static final long serialVersionUID = 6538858318123150195L;
 	private Contact contact;

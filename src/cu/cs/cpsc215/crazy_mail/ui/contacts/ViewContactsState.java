@@ -28,6 +28,7 @@ import cu.cs.cpsc215.crazy_mail.ui.FrameState;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 
 /**
+* 
 * State for viewing contacts.
 * @author Kevin Jett
 * 

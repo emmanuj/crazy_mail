@@ -1,9 +1,9 @@
 package cu.cs.cpsc215.crazy_mail.data;
 
 /**
-*@Author Emmanuel John
-*@Date 04/12/13
-*
+ *
+ * @author Kevin Jett
+ * @author Emmanuel John
 */
 import java.io.Serializable;
 

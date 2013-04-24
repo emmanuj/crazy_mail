@@ -13,10 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+/**
+ * 
+ * @author Kevin Jett
+*/
+
 public class SystemInformationDlg extends JDialog {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -7391229034595790968L;
 	JLabel mainHTML;
 	public SystemInformationDlg(MainFrame parent)

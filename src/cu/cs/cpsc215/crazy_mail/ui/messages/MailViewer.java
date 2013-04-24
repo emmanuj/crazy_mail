@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 
 /**
  *
- * @author emmanuj
+ * @author Emmanuel
  */
 public class MailViewer extends JPanel implements CommandObject {
     private String action;

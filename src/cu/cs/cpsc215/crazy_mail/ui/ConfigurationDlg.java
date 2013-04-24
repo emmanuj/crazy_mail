@@ -22,10 +22,13 @@ import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
 
+/**
+ * 
+ * @author Kevin Jett
+*/
+
 public class ConfigurationDlg extends JDialog {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 8603424428300283258L;
 	private MailAccount config;
 	private ViewConfigurationsDlg parentDlg;
@@ -132,7 +135,6 @@ public class ConfigurationDlg extends JDialog {
 						{
 							//Update the list in data store
 							int index = accounts.indexOf(config);
-							System.out.println(accounts.size());
 							accounts.remove(index);
 							accounts.add(index,account);
 							DataStore.get().setAccounts(accounts);
