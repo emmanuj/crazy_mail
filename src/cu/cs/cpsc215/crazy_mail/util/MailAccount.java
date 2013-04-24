@@ -72,6 +72,10 @@ public class MailAccount extends Configuration implements Serializable {
     		return false;
     	}
     	
+    	if(!accountPassword.equals(other.getAccountPassword()))
+    	{
+    		return false;
+    	}
     	return(super.equals(obj));
     }
 

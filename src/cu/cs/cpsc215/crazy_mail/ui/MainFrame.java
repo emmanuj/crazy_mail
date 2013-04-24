@@ -62,6 +62,7 @@ public class MainFrame extends JFrame{
     private JLabel statuslabel;
     private HashMap<String,FrameState> stateMap;
     private FrameState currentState = null;
+    private BufferedImage iconImage;
     
 	public static void init(){
 		inst = new MainFrame();
@@ -71,7 +72,7 @@ public class MainFrame extends JFrame{
 		//Show a message if the user hasn't made any accounts
         if(DataStore.get().getAccounts().size() == 0)
         {
-        	ViewConfigurationsDlg dlg = new ViewConfigurationsDlg(MainFrame.getInst());
+        	new ConfigurationDlg(null, null);
         }
 	}
 	public static MainFrame getInst(){
@@ -169,22 +170,22 @@ public class MainFrame extends JFrame{
 	
 	//Makes the main menu
 	private void makeMenu(){
+		final MainFrame t = this;
 		mainMenu = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
 		JMenu configMenu = new JMenu("Configuration");
 		JMenu helpMenu = new JMenu("Help");
 		
-		JMenuItem about = new JMenuItem("About");
+		JMenuItem about = new JMenuItem("About Crazy Mail");
 		JMenuItem exit = new JMenuItem("Exit");
-		JMenuItem stuff = new JMenuItem("Stuff");
 		JMenuItem viewAccounts = new JMenuItem("Configurations");
 		JMenuItem addAccount = new JMenuItem("Add Configuration");
 		
 		fileMenu.add(exit);
 		helpMenu.add(about);
-		configMenu.add(viewAccounts);
 		configMenu.add(addAccount);
+		configMenu.add(viewAccounts);
 		mainMenu.add(fileMenu);
 		mainMenu.add(configMenu);
 		mainMenu.add(helpMenu);
@@ -195,6 +196,12 @@ public class MainFrame extends JFrame{
 				new ConfigurationDlg(null,null);
 			}
 			
+		});
+		
+		about.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				new SystemInformationDlg(t);
+			}
 		});
 		
 		viewAccounts.addActionListener(new ActionListener(){
@@ -221,13 +228,17 @@ public class MainFrame extends JFrame{
 	
 	//Sets the icon.
 	public void setIcon(){
-		BufferedImage img = null;
+		iconImage = null;
 	       try {
-	           img = ImageIO.read(new File("icon.png"));
-	           this.setIconImage(img);
+	           iconImage = ImageIO.read(new File("icon.png"));
+	           this.setIconImage(iconImage);
 	       } catch (IOException e){
-	    	   //TODO: Make an alert about the icon
 	       }
+	}
+	
+	public BufferedImage getIconImage()
+	{
+		return iconImage;
 	}
 	
 	//Getters for all the global elements. Will probably replace with more specific functions later.
