@@ -66,7 +66,13 @@ public class MainFrame extends JFrame{
 	public static void init(){
 		inst = new MainFrame();
 		inst.setVisible(true);
-		inst.sizeGlobalElements(); //TODO: make this be called on every resize
+		inst.sizeGlobalElements();
+		
+		//Show a message if the user hasn't made any accounts
+        if(DataStore.get().getAccounts().size() == 0)
+        {
+        	ViewConfigurationsDlg dlg = new ViewConfigurationsDlg(MainFrame.getInst());
+        }
 	}
 	public static MainFrame getInst(){
 		return inst;
@@ -135,20 +141,7 @@ public class MainFrame extends JFrame{
             composebtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae){
-                    //TODO this should be changed to loading of mail accounts from the datastore
-                    ArrayList<MailAccount> accounts = new ArrayList();
-                    
-                    MailAccount conf = new MailAccount();
-                    conf.setPort(465);
-                    conf.setAccountEmail("emmylifeline@gmail.com");
-                    conf.setAccountPassword("mmcoofkovqdwezjs");
-                    conf.setHost("smtp.gmail.com");
-                    conf.setIncomingMail(Protocol.SMTP);
-                    conf.setOutgoingmail(Protocol.IMAP);
-                    conf.setFullname("Emmanuel John");
-                    
-                    accounts.add(conf);
-                    EmailTransmissionDlg emailTransmissionDlg = new EmailTransmissionDlg(MainFrame.this, accounts);
+                    EmailTransmissionDlg emailTransmissionDlg = new EmailTransmissionDlg(MainFrame.this);
                 }
             
             });
@@ -199,7 +192,7 @@ public class MainFrame extends JFrame{
 		//Menu listeners
 		addAccount.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				new ConfigurationDlg(MainFrame.getInst(),new Configuration());
+				new ConfigurationDlg(null,null);
 			}
 			
 		});

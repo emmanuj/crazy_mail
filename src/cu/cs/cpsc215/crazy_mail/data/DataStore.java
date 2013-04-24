@@ -43,6 +43,7 @@ public final class DataStore{
 	public ArrayList<MailAccount> getAccounts(){
 		return mailaccounts;
 	}
+
     public ArrayList<Contact> getContacts() {
         return contacts;
     }
@@ -177,6 +178,26 @@ public final class DataStore{
         }
         
         return idx;
+    }
+    
+    public void setAccounts(ArrayList<MailAccount> accounts)
+    {
+    	mailaccounts = accounts;
+    }
+    
+    public void addMailAccount(MailAccount account)
+    {
+    	mailaccounts.add(account);
+    }
+    
+    public void setPrimary(MailAccount account)
+    {
+    	if(mailaccounts.contains(account))
+    	{
+    		int index = mailaccounts.indexOf(account);
+    		mailaccounts.remove(index);
+    	}
+    	mailaccounts.add(0,account);
     }
     
     private ObjectOutputStream os;

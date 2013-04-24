@@ -49,10 +49,23 @@ public class Validator {
     }
     
     public static boolean validateBlank(String str){
-        return !str.equals("");
+        if(str.length() == 0)
+        	return false;
+        
+        for(int i = 0; i<str.length(); i++)
+        {
+        	if(str.charAt(i) != ' ' && str.charAt(i) != '\t')
+        	{
+        		return true;
+        	}
+        }
+        return false;
     }
         
     public static boolean validateNumericString(String str){
+    	if(str.length() == 0)
+    		return false;
+    	
     	for(int i = 0; i<str.length(); i++)
     	{
     		try{

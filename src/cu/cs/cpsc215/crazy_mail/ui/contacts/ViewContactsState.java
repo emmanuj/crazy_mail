@@ -24,6 +24,7 @@ import javax.swing.table.AbstractTableModel;
 
 import cu.cs.cpsc215.crazy_mail.data.Contact;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
+import cu.cs.cpsc215.crazy_mail.ui.AddEditDeleteMediator;
 import cu.cs.cpsc215.crazy_mail.ui.EmailTransmissionDlg;
 import cu.cs.cpsc215.crazy_mail.ui.FrameState;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
@@ -41,7 +42,7 @@ public class ViewContactsState implements FrameState{
 	private JLabel headerLabel,infoLabel;
 	private JButton addButton,editButton,deleteButton;
 	private AbstractTableModel tableModel;
-	private ContactButtonMediator buttonMediator;
+	private AddEditDeleteMediator buttonMediator;
 	private JTable table;
 	private static ViewContactsState inst = null;
 	
@@ -104,27 +105,18 @@ public class ViewContactsState implements FrameState{
 		
 		//Table handler
 		table.addMouseListener(new MouseAdapter() {
+			
+			public void mousePressed(MouseEvent e){
+				buttonMediator.setHasSelectedOption(true);
+			}
 			public void mouseClicked(MouseEvent e) {
-				buttonMediator.setHasSelectedRow(true);
-
 				if (e.getClickCount() == 2) {
 					table.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 					JTable target = (JTable)e.getSource();
 					int row = target.getSelectedRow();
-					ArrayList<MailAccount> accounts = new ArrayList();
-					        
-					MailAccount conf = new MailAccount();
-					conf.setPort(465);
-					conf.setAccountEmail("emmylifeline@gmail.com");
-					conf.setAccountPassword("mmcoofkovqdwezjs");
-					conf.setHost("smtp.gmail.com");
-					conf.setIncomingMail(Protocol.SMTP);
-					conf.setOutgoingmail(Protocol.IMAP);
-					conf.setFullname("Emmanuel John");
-					    
-					accounts.add(conf);
+
 					String email = DataStore.get().getContacts().get(row).getEmail();
-					EmailTransmissionDlg dlg = new EmailTransmissionDlg(MainFrame.getInst(),accounts);
+					EmailTransmissionDlg dlg = new EmailTransmissionDlg(MainFrame.getInst());
 					dlg.setRecepient(email);
 					table.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				 }
@@ -138,8 +130,8 @@ public class ViewContactsState implements FrameState{
 		addButton = new JButton("Add");
 		editButton = new JButton("Edit");
 		deleteButton = new JButton("Delete");
-		buttonMediator = new ContactButtonMediator(addButton,editButton,deleteButton);
-		buttonMediator.setHasSelectedRow(false);
+		buttonMediator = new AddEditDeleteMediator(addButton,editButton,deleteButton);
+		buttonMediator.setHasSelectedOption(false);
 		
 		//Add button action
 		addButton.addActionListener(new ActionListener(){
@@ -154,7 +146,7 @@ public class ViewContactsState implements FrameState{
 					} catch (IOException e) {
 					}
 					updateTable();
-					buttonMediator.setHasSelectedRow(false);
+					buttonMediator.setHasSelectedOption(false);
 				}
 			}
 		});
@@ -178,7 +170,7 @@ public class ViewContactsState implements FrameState{
 					}
 					updateTable();
 				}
-				buttonMediator.setHasSelectedRow(false);
+				buttonMediator.setHasSelectedOption(false);
 			}
 		});
 		
@@ -199,7 +191,7 @@ public class ViewContactsState implements FrameState{
 					} catch (IOException e) {
 					}
 					updateTable();
-					buttonMediator.setHasSelectedRow(false);
+					buttonMediator.setHasSelectedOption(false);
 				}
 			}
 		});
@@ -239,7 +231,7 @@ public class ViewContactsState implements FrameState{
 	public void onHide()
 	{
 		table.clearSelection();
-		buttonMediator.setHasSelectedRow(false);
+		buttonMediator.setHasSelectedOption(false);
 	}
 	
 	public void onShow()

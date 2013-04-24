@@ -20,4 +20,7 @@ public enum Protocol {
     public String value(){
         return this.protocol;
     }
+    public String toString(){
+    	return this.protocol;
+    }
 }
