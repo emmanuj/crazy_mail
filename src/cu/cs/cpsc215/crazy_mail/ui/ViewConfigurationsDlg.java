@@ -7,14 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,10 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import net.miginfocom.swing.MigLayout;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
-import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
 public class ViewConfigurationsDlg extends JDialog{

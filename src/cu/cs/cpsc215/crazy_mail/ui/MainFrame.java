@@ -75,7 +75,7 @@ public class MainFrame extends JFrame{
 		//Show a message if the user hasn't made any accounts
         if(DataStore.get().getAccounts().size() == 0)
         {
-        	new ConfigurationDlg(null, null);
+        	//new ConfigurationDlg(null, null);
         }
 	}
 	public static MainFrame getInst(){
@@ -299,10 +299,12 @@ public class MainFrame extends JFrame{
     	
     	//If there is a current state, remove and hide it
     	if(currentState != null)
-    	{
+    	{       
     		mainPanel.removeAll();
     		currentState.onHide();
+                
                 mainPanel.validate();
+                mainPanel.repaint();
     	}
     	
     	//Try to retrieve state from existing map
@@ -317,10 +319,13 @@ public class MainFrame extends JFrame{
     	}
     	
     	//Add to main panel
+               
 		mainPanel.add(currentState.getPanel());
 		currentState.onShow();
-    	mainPanel.setBackground(new Color(240,255,240));
-        mainPanel.validate();
+                mainPanel.setBackground(new Color(240,255,240));
+                
+                mainPanel.validate();
+                mainPanel.repaint();
     		
     }
     

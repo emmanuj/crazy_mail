@@ -7,6 +7,8 @@ package cu.cs.cpsc215.crazy_mail.ui.messages;
 import cu.cs.cpsc215.crazy_mail.ui.FrameState;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -41,8 +43,11 @@ public class InboxState implements FrameState {
     public JPanel messageListView(){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        panel.setPreferredSize(new Dimension(300,700));
         
         JList messagelist = new JList(msglistModel);
+        messagelist.setFixedCellHeight(60);
+        
         msglistModel.addElement("Mail 1");
         msglistModel.addElement("Mail 2");
         msglistModel.addElement("Mail 3");
@@ -51,13 +56,14 @@ public class InboxState implements FrameState {
         msglistModel.addElement("Mail 7");
         panel.add(new JScrollPane(messagelist));
         
+        
         return panel;
         
     }
     
     public JPanel createMessageViewer(){
         JPanel panel = new JPanel();
-        
+        panel.setBackground(Color.white);
         return panel;
     }
     

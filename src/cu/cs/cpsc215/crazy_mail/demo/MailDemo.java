@@ -23,6 +23,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
+import javax.swing.JFrame;
 
 /**
  *
@@ -79,7 +80,11 @@ public final class MailDemo {
         
         
     }
-    
+    public JFrame messageViewer(){
+        
+        
+        return null;
+    }
     public Properties getConf(){
         Properties props = new Properties();
         props.put("mail.transport.protocol","smtp");
