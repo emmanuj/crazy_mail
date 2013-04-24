@@ -14,6 +14,7 @@ import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -118,7 +119,6 @@ public class Email implements Mail {
     public void addBCC(String email) throws AddressException{
         bcc.add(new InternetAddress(email));
     }
-    
     
     @Override
     public void sendEmail()throws AddressException, MessagingException, IOException {
