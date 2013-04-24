@@ -95,6 +95,7 @@ public class EmailTransmissionDlg extends JDialog {
         //Special closer
         final EmailTransmissionDlg t = this;
         addWindowListener(new WindowAdapter() {
+                @Override
         	public void windowClosing(WindowEvent we) {
         	t.dispose();
         	count--;
@@ -202,7 +203,7 @@ public class EmailTransmissionDlg extends JDialog {
         SwingWorker worker = new SwingWorker() {
 
             @Override
-            protected Object doInBackground() throws Exception {
+            protected Object doInBackground() throws AddressException, MessagingException, IOException {
                 MailAccount userAccount = (MailAccount) fromcbox.getSelectedItem();
         
                 Email email = new Email(userAccount);
@@ -212,8 +213,6 @@ public class EmailTransmissionDlg extends JDialog {
                 MailListener listener = new MailListener(parent);
                 email.setListener(listener);
                 email.sendEmail();
-                
-                
 
                 return null;
             }
