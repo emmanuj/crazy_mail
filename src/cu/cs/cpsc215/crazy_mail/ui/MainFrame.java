@@ -3,6 +3,7 @@ package cu.cs.cpsc215.crazy_mail.ui;
 import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.contacts.ViewContactsState;
+import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 
@@ -36,6 +37,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 
 import cu.cs.cpsc215.crazy_mail.util.Configuration;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 /**
  * 
  * @author Kevin Jett
@@ -96,12 +99,15 @@ public class MainFrame extends JFrame{
             
             final MainFrame t = this;
             this.addWindowListener(new WindowAdapter() {
+                @Override
                 public void windowClosing(WindowEvent e) {
                     t.dispose();
                     MainDriver.shutdown();
                 }
 
             });
+            
+            
 	}
 	
 	//Makes the global elements for the layout
@@ -125,7 +131,8 @@ public class MainFrame extends JFrame{
 	public JPanel createStatusPane(){
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new FlowLayout(FlowLayout.LEADING));
-	    statuslabel = new JLabel("Downloading... 90%");
+            panel.setPreferredSize(new Dimension(this.getWidth(), 55));
+	    statuslabel = new JLabel("Ready");
 	    panel.add(statuslabel);
 	    
 	    return panel;
@@ -154,12 +161,32 @@ public class MainFrame extends JFrame{
             
             JPanel c_panel = new JPanel();
             c_panel.setLayout(new BorderLayout());
-            JList list = new JList(new String[]{"Contacts","Inbox",
-                "Sent", "Trash"});
+            final JList list = new JList(new String[]{"Contacts","Inbox",
+                "Sent"});
             list.setBackground(null);
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setFixedCellHeight(50);
             list.setSelectedIndex(0);
+            
+            list.addListSelectionListener(new ListSelectionListener() {
+
+                @Override
+                public void valueChanged(ListSelectionEvent lse) {
+                    if(list.getSelectedIndex()==0){
+                        switchState(ViewContactsState.get());
+                    }
+                    
+                    if(list.getSelectedIndex() == 1){
+                        switchState(InboxState.get());
+                    }
+                    
+                    if(list.getSelectedIndex() == 2){
+                        //switchState(InboxState.get());
+                    }
+                    
+                }
+            });
+            
             c_panel.add(new JScrollPane(list));
             
             main_panel.add(n_panel, "North");
@@ -275,6 +302,7 @@ public class MainFrame extends JFrame{
     	{
     		mainPanel.removeAll();
     		currentState.onHide();
+                mainPanel.validate();
     	}
     	
     	//Try to retrieve state from existing map
@@ -292,7 +320,10 @@ public class MainFrame extends JFrame{
 		mainPanel.add(currentState.getPanel());
 		currentState.onShow();
     	mainPanel.setBackground(new Color(240,255,240));
+        mainPanel.validate();
     		
     }
+    
+    
 
 }

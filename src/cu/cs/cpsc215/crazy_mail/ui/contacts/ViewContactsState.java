@@ -212,11 +212,13 @@ public class ViewContactsState implements FrameState{
 	}
 	
 	//Hash identifier
+        @Override
 	public String getName()
 	{
 		return "Contacts";
 	}
 	
+        @Override
 	public JPanel getPanel()
 	{
 		return statePanel;
@@ -228,12 +230,14 @@ public class ViewContactsState implements FrameState{
 	}
 	
 	//Clear the selection on the hiding of this state
+        @Override
 	public void onHide()
 	{
 		table.clearSelection();
 		buttonMediator.setHasSelectedOption(false);
 	}
 	
+        @Override
 	public void onShow()
 	{
 	}
