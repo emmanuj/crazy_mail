@@ -4,8 +4,6 @@ import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.contacts.ViewContactsState;
 import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
-import cu.cs.cpsc215.crazy_mail.util.MailAccount;
-import cu.cs.cpsc215.crazy_mail.util.Protocol;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -36,7 +33,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 
-import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 /**
@@ -68,6 +64,9 @@ public class MainFrame extends JFrame{
     private BufferedImage iconImage;
     
 	public static void init(){
+		if(inst != null)
+			return;
+					
 		inst = new MainFrame();
 		inst.setVisible(true);
 		inst.sizeGlobalElements();
@@ -146,10 +145,11 @@ public class MainFrame extends JFrame{
             JPanel n_panel = new JPanel();
             n_panel.setLayout(new FlowLayout(FlowLayout.LEADING));
             JButton composebtn = new JButton("New");
+            
             composebtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae){
-                    EmailTransmissionDlg emailTransmissionDlg = new EmailTransmissionDlg(MainFrame.this);
+                    new EmailTransmissionDlg(MainFrame.this);
                 }
             
             });

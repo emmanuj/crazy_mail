@@ -1,21 +1,21 @@
 package cu.cs.cpsc215.crazy_mail.data;
 
+import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.Configuration;
-import cu.cs.cpsc215.crazy_mail.util.Validator;
 import java.io.IOException;
-import cu.cs.cpsc215.crazy_mail.exceptions.ConfigurationException;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 /**
 *@Author Emmanuel John
@@ -29,16 +29,13 @@ import java.util.logging.Logger;
 public final class DataStore{
 
 	//Singleton
-	public static DataStore initDataStore(){
-	    if(!Validator.validateNotNull(store))
+	public static DataStore get(){
+	    if(store == null)
 	        store = new DataStore();
 	    
 	    return store;
 	}
-	public static DataStore get(){ //short hand
-		return initDataStore();
-	}
-	    
+
 	//Getters
 	public ArrayList<MailAccount> getAccounts(){
 		return mailaccounts;
@@ -52,12 +49,8 @@ public final class DataStore{
         this.contacts = contacts;
     }
 
-    public Configuration getConfig(String accountEmail) {
+    public Configuration getPrimaryAccount(String accountEmail) {
         return config;
-    }
-
-    public Contact getContact(String email){
-        return null;
     }
     
     public Contact getContact(int id){
@@ -65,19 +58,24 @@ public final class DataStore{
     }
     
     private DataStore(){
-        this.contacts = new ArrayList<Contact>();
-        try {
-            loadContacts();
-            loadConfigurations();
-        } catch (FileNotFoundException e){ //Make the file if it's not found
-        	File f = new File("cdb.dat");
-        	try
+    	File f = new File("cdb.dat");
+    	
+    	//Make config file if it doesn't exist
+    	if(!f.exists())
+    	{
+    		try
         	{
 				f.createNewFile();
 			} catch (IOException e1) {
 				Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE,null,e1);
+				JOptionPane.showMessageDialog(MainFrame.getInst(),"<html><b>FATAL ERROR</b><br/>Unable to make config file.</html>","ERROR",JOptionPane.ERROR_MESSAGE);
 			}
-    	} 
+    	}
+    	
+    	//Attempt to load everything
+        try {	
+        	loadAll();
+        }
         catch (EOFException eof){ //Do nothing for eof exceptions...
     	}
         catch (IOException ex) { //Log all other exceptions
@@ -87,90 +85,46 @@ public final class DataStore{
         }
     }
         
-    public void loadContacts() throws IOException, ClassNotFoundException{
-        is = new ObjectInputStream(new FileInputStream("cdb.dat"));
-        
-        contacts = (ArrayList<Contact>) is.readObject();
-        
-        
-    }
-    //TODO Check if contact exists before saving
-    public void saveContact(Contact c) throws IOException{
-        c.setContactID(generateId());
-        
-        contacts.add(c);
-        
-        new Thread(new Runnable(){
-            @Override
-            public void run(){
-                try {
-                    saveContacts(contacts);
-                } catch (IOException ex) {
-                    Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        
-        }).start();
-        
-        
-        
+    public void addContact(Contact c)
+    {
+    	c.setContactID(generateId());
+    	contacts.add(c);
     }
     
-    public void saveContacts(ArrayList<Contact> contacts) throws IOException{
-        os = new ObjectOutputStream(new FileOutputStream("cdb.dat"));
-        
-        os.writeObject(contacts);
-        
+    public void addConfiguration(MailAccount mailAccount)
+    {
+    	if(mailaccounts.contains(mailAccount))
+            return;
+    	mailaccounts.add(mailAccount);
     }
     
-    public void loadConfigurations() throws IOException, ClassNotFoundException{
-        is = new ObjectInputStream(new FileInputStream("fdb.config"));
-        
+    public void loadAll() throws IOException, ClassNotFoundException{
+    	contacts = new ArrayList<Contact>();
+    	mailaccounts = new ArrayList<MailAccount>();
+    	File f = new File("fdb.config");
+    	if(!f.exists())
+    	{
+    		f.createNewFile();
+    	}
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream("fdb.config"));
+        contacts = (ArrayList) is.readObject();
         mailaccounts = (ArrayList) is.readObject();
         
+        System.out.println("Loaded");
+        is.close();
     }
-    //TODO Check if mail account exists before saving
-    public void saveConfiguration(MailAccount mailAccount) throws ConfigurationException,
-            IOException{
-        if(mailaccounts.contains(mailAccount))
-            return;
-
-        os = new ObjectOutputStream(new FileOutputStream("fdb.config"));
         
-        mailaccounts.add(mailAccount);
-        os.writeObject(mailaccounts);
-        
-    }
-    
-    public void saveAll()
+    public void saveAll() throws IOException
     {
-    	
-    }
-    public ArrayList<Contact> findAllByEmail(String email){
-        return null;
-    }
-    
-    public ArrayList<Contact> findAllByFirstname(String firstname){
-        return null;
-    }
-
-    public ArrayList<Contact> findAllByLastname(String lastname){
-        return null;
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("fdb.config"));
+        os.writeObject(contacts);
+        os.writeObject(mailaccounts);
+        os.close();
     }
     
-    public ArrayList<Contact> findAllByCity(String city){
-        return null;
-    }
+   
     
-    public ArrayList<Contact> findAllByState(String state){
-        return null;
-    }
-    
-    public ArrayList<Contact> findAllByZip(String zip){
-        return null;
-    }
-    
-    private long generateId() throws IOException{
+    private long generateId(){
         
         long idx = 1;
         if(contacts.size()>=1){
@@ -198,10 +152,9 @@ public final class DataStore{
     		mailaccounts.remove(index);
     	}
     	mailaccounts.add(0,account);
+    	config = account;
     }
     
-    private ObjectOutputStream os;
-    private ObjectInputStream is;
     private ArrayList<Contact> contacts;
     private Configuration config;
     private ArrayList<MailAccount> mailaccounts = new ArrayList<MailAccount>();

@@ -25,21 +25,21 @@ import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
 public class ViewConfigurationsDlg extends JDialog{
+	private static final long serialVersionUID = -939507760895083297L;
 	private JPanel mainPanel;
 	private JSplitPane splitPane;
 	private JList accountList;
 	private JButton addButton,editButton,deleteButton,makePrimaryButton,doneButton;
 	private JPanel content;
-	private MainFrame parent;
 	private AddEditDeleteMediator buttonMediator;
 	private DefaultListModel listModel;
 	private JLabel contentInfo;
+	
 	public ViewConfigurationsDlg(MainFrame parent)
 	{
-		super(MainFrame.getInst());
+		super(parent);
 		 
 		//Set parent, and modal to true
-		this.parent = parent;
 		this.setModal(true);
 		 
 		//Make the panels

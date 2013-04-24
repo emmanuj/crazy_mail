@@ -1,7 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
-import cu.cs.cpsc215.crazy_mail.mail.Email;
-import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import cu.cs.cpsc215.crazy_mail.util.Validator;

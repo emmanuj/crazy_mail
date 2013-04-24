@@ -13,11 +13,9 @@ import javax.mail.event.ConnectionEvent;
 import javax.mail.event.ConnectionListener;
 import javax.mail.event.TransportEvent;
 import javax.mail.event.TransportListener;
-import javax.swing.JWindow;
 
 /**
- *
- * @author Hermoine
+ * @author Emmanuel
  */
 public class MailListener implements TransportListener, ConnectionListener {
     private MainFrame main;

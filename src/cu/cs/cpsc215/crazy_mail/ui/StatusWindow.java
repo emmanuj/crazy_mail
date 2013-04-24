@@ -6,10 +6,8 @@ package cu.cs.cpsc215.crazy_mail.ui;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +24,10 @@ import net.miginfocom.swing.MigLayout;
  * @author Hermoine
  */
 public class StatusWindow extends JWindow {
-    public StatusWindow(JFrame parent, String message){
+
+	private static final long serialVersionUID = -3922283714539226067L;
+
+	public StatusWindow(JFrame parent, String message){
         
         JPanel b_pane = new JPanel();
         b_pane.setLayout(new FlowLayout(FlowLayout.TRAILING));

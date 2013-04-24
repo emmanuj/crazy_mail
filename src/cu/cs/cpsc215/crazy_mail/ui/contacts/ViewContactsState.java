@@ -1,14 +1,12 @@
 package cu.cs.cpsc215.crazy_mail.ui.contacts;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -28,8 +26,6 @@ import cu.cs.cpsc215.crazy_mail.ui.AddEditDeleteMediator;
 import cu.cs.cpsc215.crazy_mail.ui.EmailTransmissionDlg;
 import cu.cs.cpsc215.crazy_mail.ui.FrameState;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
-import cu.cs.cpsc215.crazy_mail.util.MailAccount;
-import cu.cs.cpsc215.crazy_mail.util.Protocol;
 
 /**
 * State for viewing contacts.
@@ -141,10 +137,7 @@ public class ViewContactsState implements FrameState{
 				Contact c = dialog.getContact();
 				if(c!=null)
 				{
-					try {
-						DataStore.get().saveContact(c);
-					} catch (IOException e) {
-					}
+					DataStore.get().addContact(c);
 					updateTable();
 					buttonMediator.setHasSelectedOption(false);
 				}
@@ -164,10 +157,7 @@ public class ViewContactsState implements FrameState{
 					ArrayList<Contact> contacts = DataStore.get().getContacts();
 					contacts.remove(row);
 					contacts.add(row,c);
-					try {
-						DataStore.get().saveContacts(contacts);
-					} catch (IOException e) {
-					}
+					DataStore.get().setContacts(contacts);
 					updateTable();
 				}
 				buttonMediator.setHasSelectedOption(false);
@@ -185,11 +175,7 @@ public class ViewContactsState implements FrameState{
 				int remove = JOptionPane.showConfirmDialog(ViewContactsState.get().getPanel(),"Are you sure you want to delete the contact \""+name+"\"?");
 				if(remove == JOptionPane.YES_OPTION)
 				{
-					contacts.remove(row);
-					try {
-						DataStore.get().saveContacts(contacts);
-					} catch (IOException e) {
-					}
+					DataStore.get().setContacts(contacts);
 					updateTable();
 					buttonMediator.setHasSelectedOption(false);
 				}
