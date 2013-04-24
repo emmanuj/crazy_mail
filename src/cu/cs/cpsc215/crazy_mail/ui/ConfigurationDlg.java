@@ -3,6 +3,7 @@ package cu.cs.cpsc215.crazy_mail.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,13 +28,13 @@ public class ConfigurationDlg extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 8603424428300283258L;
-	private Configuration config;
+	private MailAccount config;
 	private ViewConfigurationsDlg parentDlg;
 	private JTextField nameField,emailField,hostField,portField;
 	private JPasswordField passwordField;
     private JComboBox incomingOptions, outgoingOptions;
     private JCheckBox tlsBox, sslBox;
-	public ConfigurationDlg(ViewConfigurationsDlg dlg, Configuration configuration)
+	public ConfigurationDlg(ViewConfigurationsDlg dlg, MailAccount configuration)
 	{
 		super(MainFrame.getInst());
 		this.parentDlg = dlg;
@@ -72,9 +73,18 @@ public class ConfigurationDlg extends JDialog {
         //Read in values
         if(configuration!=null)
         {
+        	nameField.setText(configuration.getFullname());
+        	emailField.setText(configuration.getAccountEmail());
+        	passwordField.setText(configuration.getAccountPassword());
 	        hostField.setText(configuration.getHost());
 	        portField.setText(""+configuration.getPort());
+	        tlsBox.setSelected(configuration.isUseTLS());
+	        sslBox.setSelected(configuration.isUseSSL());
+	        incomingOptions.setSelectedItem(configuration.getIncomingMail());
+	        outgoingOptions.setSelectedItem(configuration.getOutgoingMail());
+	        
 	        button.setText("Edit Configuration");
+	        
         }
         else
         {
@@ -108,9 +118,35 @@ public class ConfigurationDlg extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				
 				MailAccount account = validateAndBuild();
-				if(account != null)
+				if(account != null) //If valid
 				{
-					DataStore.get().addMailAccount(account);
+					//Get accounts
+					ArrayList<MailAccount> accounts = DataStore.get().getAccounts();
+					
+					//If this an edit
+					if(config!=null)
+					{
+						//Check that any edits were made
+						if(!account.equals(config))
+						{
+							//Update the list in data store
+							int index = accounts.indexOf(config);
+							System.out.println(accounts.size());
+							accounts.remove(index);
+							accounts.add(index,account);
+							DataStore.get().setAccounts(accounts);
+						}
+					}
+					else //If we are making a new account, just add to datastore
+					{
+						if(DataStore.get().getAccounts().contains(account))
+						{
+							JOptionPane.showMessageDialog(MainFrame.getInst(),"An account already exists with these values.","Error",JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						
+						DataStore.get().addMailAccount(account);
+					}
 					if(t.parentDlg != null)
 					{
 						parentDlg.updateList();

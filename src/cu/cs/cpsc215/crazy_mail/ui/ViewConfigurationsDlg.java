@@ -141,7 +141,9 @@ public class ViewConfigurationsDlg extends JDialog{
 		 
 		 editButton.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent arg0){
-				 
+				 int a = accountList.getSelectedIndex();
+				 ConfigurationDlg dlg = new ConfigurationDlg(t,(MailAccount)accountList.getSelectedValue());
+				 accountList.setSelectedIndex(a);
 			 }
 		 });
 		 
@@ -150,6 +152,7 @@ public class ViewConfigurationsDlg extends JDialog{
 				 int remove = JOptionPane.showConfirmDialog(t,"Are you sure you want to delete the mail account?");
 				 if(remove == JOptionPane.YES_OPTION)
 				 {
+					 DataStore.get().getAccounts().remove(accountList.getSelectedValue());
 					 DefaultListModel m = (DefaultListModel)accountList.getModel();
 					 m.removeElementAt(accountList.getSelectedIndex());
 					 buttonMediator.setHasSelectedOption(false);

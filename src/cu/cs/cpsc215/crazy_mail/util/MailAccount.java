@@ -43,19 +43,36 @@ public class MailAccount extends Configuration implements Serializable {
     }
 
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equalsNameEmail(MailAccount other) {
+        if (other== null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final MailAccount other = (MailAccount) obj;
-        if (accountEmail.equals(other.accountEmail)) {
-            return false;
-        }
-        return true;
+        
+        return(accountEmail.equals(other.accountEmail) && fullname.equals(other.fullname));
+    }
+    
+    @Override  
+    public boolean equals(Object obj)
+    {
+    	if (obj == null) { 
+    		return false;
+    	}  
+        if (getClass() != obj.getClass()) { 
+        	return false;
+        }  
+    	
+    	if(obj.getClass() != this.getClass())
+    	{
+    		return false;
+    	}
+    	MailAccount other = (MailAccount)obj;
+
+    	if(!this.equalsNameEmail(other))
+    	{
+    		return false;
+    	}
+    	
+    	return(super.equals(obj));
     }
 
     @Override

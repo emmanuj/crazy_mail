@@ -14,7 +14,7 @@ public class Configuration implements Serializable {
 
 	private static final long serialVersionUID = 1228598296735827634L;
 
-    private Protocol outgoingmail;
+    private Protocol outgoingMail;
     private Protocol incomingMail;
     private String host;
     private boolean debug = true;
@@ -30,12 +30,12 @@ public class Configuration implements Serializable {
         this.auth = auth;
     }
 
-    public Protocol getOutgoingmail() {
-        return outgoingmail;
+    public Protocol getOutgoingMail() {
+        return outgoingMail;
     }
 
     public void setOutgoingMail(Protocol outgoingmail) {
-        this.outgoingmail = outgoingmail;
+        this.outgoingMail = outgoingmail;
     }
 
     public Protocol getIncomingMail() {
@@ -84,6 +84,25 @@ public class Configuration implements Serializable {
 
     public void setUseSSL(boolean useSSL) {
         this.useSSL = useSSL;
+    }
+    
+    @Override  
+    public boolean equals(Object obj)
+    {
+    	if (obj == null) { 
+    		return false;
+    	}  
+        if (getClass() != obj.getClass()) { 
+        	return false;
+        }  
+        Configuration other = (Configuration)obj;
+        
+    	boolean protocolsEqual,sslTlsEqual;
+    	protocolsEqual = ( outgoingMail.equals(other.getOutgoingMail()) && incomingMail.equals(other.getIncomingMail()));
+    	sslTlsEqual = (useTLS == other.isUseTLS()) && (useSSL == other.isUseSSL());
+    	
+    	return(host.equals(other.getHost()) && port == other.getPort() && protocolsEqual && sslTlsEqual);
+
     }
     
     
