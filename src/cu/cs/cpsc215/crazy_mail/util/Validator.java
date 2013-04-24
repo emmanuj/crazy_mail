@@ -19,6 +19,22 @@ public class Validator {
         if(email.equals(""))
             return false;
         
+        String[] parsedEmail = email.split("@");
+        if(parsedEmail.length!=2)
+            return false;
+        
+        String user = parsedEmail[0];
+        
+        //String [] secondPart = parsedEmail[1];
+        
+        
+        if(user.equals("") ){
+            return false;
+        }
+        
+        
+        
+        
         if(!email.contains("@"))
         {
         	return false;
@@ -35,7 +51,7 @@ public class Validator {
     public static boolean validateBlank(String str){
         return !str.equals("");
     }
-    
+        
     public static boolean validateNumericString(String str){
     	for(int i = 0; i<str.length(); i++)
     	{

@@ -13,16 +13,16 @@ crazy_mail
 +++++++++++++++++<br/>
 <ul>
 	
-<li> Update this wiki</li>
-<li>Create a tasks list</li>
-<li> Create Inbox, Send states</li>
-<li> Add actions to list menu </li>
+<li>Inbox and Send States</li>
+<li>DataStore - saveall and shutdown</li>
+<li> status label modification</li>
+<li> list renderer for menu </li>
 <li> Datastore class modifications</li>
 <li> Create About UI </li>
-<li> Error handling for sending mails </li>
-<li> Validate mail account</li>
-<li> Status Bar </li>
-<li> Run tests </li>
+<li> Create Icons </li>
+<li> Tweak Configuration dialog - edit and view information, make primary</li>
+<li> Run tests (Beta and Unit)</li>
+<li>Create a readme (Short tutorial) file</li>
 </ul>
 
 <h5>Dependencies</h5>
@@ -34,8 +34,6 @@ crazy_mail
 <li>MigLayout</li>
 
 </ul>
-
-
 
 <h5>Resources</h5>
 +++++++++++++++++++++<br/>
