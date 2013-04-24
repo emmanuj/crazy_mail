@@ -34,7 +34,7 @@ public class Configuration implements Serializable {
         return outgoingmail;
     }
 
-    public void setOutgoingmail(Protocol outgoingmail) {
+    public void setOutgoingMail(Protocol outgoingmail) {
         this.outgoingmail = outgoingmail;
     }
 

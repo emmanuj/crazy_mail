@@ -4,6 +4,7 @@
  */
 package cu.cs.cpsc215.crazy_mail.ui;
 
+import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.mail.Email;
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
@@ -27,6 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -52,7 +54,17 @@ public class EmailTransmissionDlg extends JDialog {
     private JComboBox fromcbox;
     
     private static int count = 0;
-    public EmailTransmissionDlg(MainFrame parent, ArrayList<MailAccount> mailaccounts){
+    public EmailTransmissionDlg(MainFrame parent){
+    	super(MainFrame.getInst());
+    	mailaccounts = DataStore.get().getAccounts();
+    	//If there are no accounts, spit out a message and close
+    	if(DataStore.get().getAccounts().size()==0)
+    	{
+    		JOptionPane.showMessageDialog(MainFrame.getInst(),"You must make an account before you can send any messages.");
+    		this.dispose();
+    		return;
+    	}
+    	
         count++;
         this.parent = parent;
         this.mailaccounts = mailaccounts;

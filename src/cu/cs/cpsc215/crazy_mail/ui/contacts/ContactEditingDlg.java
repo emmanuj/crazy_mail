@@ -27,8 +27,9 @@ public class ContactEditingDlg extends JDialog{
 	
 	private JTextField firstNameField,lastNameField,emailField,cellField,homeField;
 	private JTextField addressFieldStreet,addressFieldCity, addressFieldZip;
-	private JComboBox<String> addressStateDropdown;
+	private JComboBox addressStateDropdown;
 	public ContactEditingDlg(MainFrame parent, Contact contact){
+		super(MainFrame.getInst());
 		this.parent = parent;
 		this.contact = contact;
 		this.setModal(true);
@@ -60,7 +61,7 @@ public class ContactEditingDlg extends JDialog{
 		addressFieldZip = new JTextField(50);
 		
 		
-		addressStateDropdown = new JComboBox<String>(Address.getStates());
+		addressStateDropdown = new JComboBox(Address.getStates());
 
 		
 		if(contact!=null)
@@ -186,7 +187,7 @@ public class ContactEditingDlg extends JDialog{
 		}
 		else //Otherwise show a message and return null
 		{
-			JOptionPane.showMessageDialog(parent,"There were one or more errors with the contact. \n"+error_string);
+			JOptionPane.showMessageDialog(parent,"<html><div width='250px'>There were one or more errors with the contact. <br/>"+error_string+"</div></html>","Error",JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
