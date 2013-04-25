@@ -8,7 +8,6 @@ import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.mail.Email;
 import cu.cs.cpsc215.crazy_mail.mail.EmailAttachment;
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
-import cu.cs.cpsc215.crazy_mail.mail.MultiPartEmail;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

@@ -140,19 +140,22 @@ public class InboxState implements FrameState {
 	        messagelist = new JList();
 	        messagelist.setModel(model);
 	    
-	        messagelist.setFixedCellHeight(60);
+	        messagelist.setFixedCellHeight(70);
 	        messagelist.addListSelectionListener(new ListSelectionListener() {
 	
 	            @Override
 	            public void valueChanged(ListSelectionEvent e) {
-	                try {
-	                    Message msg = (Message)messagelist.getSelectedValue();
-	                    textpane.setText(getMessageContent((Message)messagelist.getSelectedValue()));
-	                } catch (IOException ex) {
-	                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-	                } catch (MessagingException ex) {
-	                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-	                }
+	            	if(!e.getValueIsAdjusting())
+	            	{
+	            		try {
+		                    Message msg = (Message)messagelist.getSelectedValue();
+		                    textpane.setText(getMessageContent(msg));
+		                } catch (IOException ex) {
+		                   Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
+		                } catch (MessagingException ex) {
+		                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
+		                }
+	            	}
 	            }
 	        });
 	        
@@ -233,7 +236,11 @@ public class InboxState implements FrameState {
             for (int i = 0; i < multipart.getCount(); i++) {
                 Part part = (Part) multipart.getBodyPart(i);
                 if (part.isMimeType("text/html")||part.isMimeType("text/plain")) {
-                    messageContent.append(part.getContent().toString());
+                	messageContent.append(part.getContent().toString());
+                }
+                else
+                {
+                	messageContent.append("<html><span style='color:red;'>Could not display Mime Type: "+part.getContentType()+"<br/></span></html>");
                 }
                 
             }
