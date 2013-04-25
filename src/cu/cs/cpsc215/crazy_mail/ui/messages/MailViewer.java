@@ -6,6 +6,8 @@ package cu.cs.cpsc215.crazy_mail.ui.messages;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,10 +30,20 @@ public class MailViewer extends JPanel implements CommandObject {
     private DataHandler datahandler;
     private Message m_message;
     private Component body_component;
+    
+    public MailViewer(){
+        this(null);
+    }
+    
     public MailViewer(Message m_message){
-        setLayout(new BorderLayout());
         
-        
+        setLayout(new GridBagLayout());
+        GridBagConstraints gb = new GridBagConstraints();
+        gb.gridwidth = GridBagConstraints.REMAINDER;
+        gb.fill = GridBagConstraints.BOTH;
+        gb.weightx = 1.0;
+        gb.weighty = 0.0;
+
         setMessage(m_message);
     }
     
@@ -42,9 +54,10 @@ public class MailViewer extends JPanel implements CommandObject {
         
         Object obj = dh.getContent();
         
-        if(obj instanceof Message)
+        if(obj instanceof Message){
+            System.out.println(obj.toString());
             setMessage((Message)obj);
-        else
+        }else
             System.out.println("Content not a message object");
             
     }
@@ -64,9 +77,20 @@ public class MailViewer extends JPanel implements CommandObject {
             display_pane.setEditable(false);
             body_component = display_pane;
         }
+        // add the main body
+        GridBagConstraints gb = new GridBagConstraints();
+        gb.gridwidth = GridBagConstraints.REMAINDER;
+        gb.fill = GridBagConstraints.BOTH;
+        gb.weightx = 1.0;
+        gb.weighty = 1.0;
+        add(body_component,gb);
+
+        invalidate();
+        validate();
         
-        add(new JScrollPane(body_component));
         
+        invalidate();
+        validate();
         
     }
     
@@ -77,14 +101,16 @@ public class MailViewer extends JPanel implements CommandObject {
     protected Component getBodyView(){
         try {
             DataHandler d_handler = m_message.getDataHandler();
-            CommandInfo c_info = d_handler.getCommand(action);
+           // System.out.println(d_handler.getAllCommands()[0].toString());
             
+            CommandInfo c_info = d_handler.getCommand("content-handler");
+            //System.out.println(c_info.toString());
             if(c_info == null){
-                throw new MessagingException("view commadn failed on: "+ m_message.getContentType() );
+                throw new MessagingException("View command failed on: "+ m_message.getContentType() );
             }
             
             Object data_bean = d_handler.getBean(c_info);
-            
+
             if(data_bean instanceof Component){
                 return (Component) data_bean;
             }else{

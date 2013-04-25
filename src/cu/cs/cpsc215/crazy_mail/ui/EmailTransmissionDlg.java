@@ -6,7 +6,9 @@ package cu.cs.cpsc215.crazy_mail.ui;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.mail.Email;
+import cu.cs.cpsc215.crazy_mail.mail.EmailAttachment;
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
+import cu.cs.cpsc215.crazy_mail.mail.MultiPartEmail;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -52,8 +54,9 @@ public class EmailTransmissionDlg extends JDialog {
     private JTextField ccfield;
     private JTextField tofield;
     private JComboBox fromcbox;
-    
+    private ArrayList<EmailAttachment> attachments = new ArrayList();
     private static int count = 0;
+    private JPanel attachment_panel;
     public EmailTransmissionDlg(MainFrame parent){
     	super(MainFrame.getInst());
     	mailaccounts = DataStore.get().getAccounts();
@@ -170,6 +173,9 @@ public class EmailTransmissionDlg extends JDialog {
         inputPanel.add(fromlabel);
         inputPanel.add(fromcbox);
         
+        attachment_panel = new JPanel(new MigLayout("wrap 5"));
+        
+        inputPanel.add(attachment_panel);
         return inputPanel;
     }
     private JPanel createComposePanel(){
@@ -184,6 +190,7 @@ public class EmailTransmissionDlg extends JDialog {
         
         return areaPanel;
     }
+    
     public void attachAction(){
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Attach a File");
@@ -194,7 +201,16 @@ public class EmailTransmissionDlg extends JDialog {
         if(option == JFileChooser.APPROVE_OPTION){
             File file = chooser.getSelectedFile();
             
-            System.out.println(file.getPath());
+            EmailAttachment attachment = new EmailAttachment(file);
+            
+            attachment_panel.add(new JLabel(file.getName()));
+            if(attachments.size()>2){
+                JOptionPane.showMessageDialog(this, "Sorry you are limited to two attachments per message");
+            }else{
+                attachments.add(attachment);
+            }
+            
+            //System.out.println(file.getPath());
         }
     }
     
@@ -205,17 +221,25 @@ public class EmailTransmissionDlg extends JDialog {
             protected Object doInBackground() throws AddressException, MessagingException, IOException {
                 MailAccount userAccount = (MailAccount) fromcbox.getSelectedItem();
         
-                Email email = new Email(userAccount);
+                MultiPartEmail email = new MultiPartEmail(userAccount);
                 email.addTo(tofield.getText());
                 email.setSubject(subjfield.getText());
                 email.setMsg(contentArea.getText());
                 MailListener listener = new MailListener(parent);
                 email.setListener(listener);
+                
+                for(EmailAttachment at : attachments){
+                    email.attach(at);
+                }
+                
                 email.sendEmail();
+                
+                
 
                 return null;
             }
         };
+        parent.setStatus("Sending...");
         worker.execute();
         EmailTransmissionDlg.this.dispose();
     }

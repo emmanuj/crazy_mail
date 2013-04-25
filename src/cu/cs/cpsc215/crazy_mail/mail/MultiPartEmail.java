@@ -30,9 +30,9 @@ import javax.mail.internet.MimeMultipart;
 public class MultiPartEmail extends Email {
     
     private EmailAttachment attachment;
-    private ArrayList<File> filelist = new ArrayList();
-    public EmailAttachment getAttachment() {
-        return attachment;
+    private ArrayList<EmailAttachment> attachments = new ArrayList();
+    public ArrayList<EmailAttachment> getAttachments() {
+        return attachments;
     }
 
     public MultiPartEmail(MailAccount mailaccount) {
@@ -40,9 +40,7 @@ public class MultiPartEmail extends Email {
     }
     
     public void attach(EmailAttachment attachment){
-        
-        
-        
+        attachments.add(attachment);
     }
 
     @Override
@@ -78,10 +76,14 @@ public class MultiPartEmail extends Email {
         
         MimeBodyPart body = new MimeBodyPart();
         body.setText(getMsg());
+        multipart_msg.addBodyPart(body);
+        for(EmailAttachment at: attachments){
+            MimeBodyPart at_part = new MimeBodyPart();
+            at_part.attachFile(at.getFile());
+            multipart_msg.addBodyPart(at_part);
+        }
         
-        
-        MimeBodyPart attachment = new MimeBodyPart();
-        //attachment.
+        mimeMsg.setContent(multipart_msg);
         
         MailListener m_listener = new MailListener();
         transport = session.getTransport();

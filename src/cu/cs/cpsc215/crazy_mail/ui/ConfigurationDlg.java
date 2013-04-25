@@ -37,6 +37,7 @@ public class ConfigurationDlg extends JDialog {
     private JComboBox incomingOptions, outgoingOptions;
     private JCheckBox tlsBox, sslBox;
     private JLabel validateLabel;
+    private final JTextField in_hostField;
 	public ConfigurationDlg(ViewConfigurationsDlg dlg, MailAccount configuration)
 	{
 		super(MainFrame.getInst());
@@ -49,11 +50,12 @@ public class ConfigurationDlg extends JDialog {
 		
 		JLabel nameLabel = new JLabel("Name");
 		JLabel emailLabel = new JLabel("Email");
-        JLabel hostLabel = new JLabel("Host");
+        JLabel hostLabel = new JLabel("Smtp Host");
         JLabel portLabel = new JLabel("Port");
         JLabel passwordLabel = new JLabel("Password");
         JLabel incomingLabel = new JLabel("Incoming Protocol");
         JLabel outgoingLabel = new JLabel("Outgoing Protocol");
+        JLabel in_hostLabel = new JLabel("Incoming msg host");
         JLabel useTLS = new JLabel("Use TLS");
         JLabel useSSL = new JLabel("Use SSL");
         
@@ -61,6 +63,8 @@ public class ConfigurationDlg extends JDialog {
         emailField = new JTextField(20);
         passwordField = new JPasswordField(20);
         hostField = new JTextField(20);
+        in_hostField = new JTextField(20);
+        in_hostField.setText("(Optional)");
         portField = new JTextField(20);
         portField.setText("465");
         Protocol[] iOptions = {Protocol.IMAP,Protocol.IMAPS,Protocol.POP3,Protocol.POP3S};
@@ -80,6 +84,7 @@ public class ConfigurationDlg extends JDialog {
         	emailField.setText(configuration.getAccountEmail());
         	passwordField.setText(configuration.getAccountPassword());
 	        hostField.setText(configuration.getHost());
+                in_hostField.setText(configuration.getInHost());
 	        portField.setText(""+configuration.getPort());
 	        tlsBox.setSelected(configuration.isUseTLS());
 	        sslBox.setSelected(configuration.isUseSSL());
@@ -104,6 +109,8 @@ public class ConfigurationDlg extends JDialog {
         n_panel.add(passwordField);
         n_panel.add(portLabel);
         n_panel.add(portField);
+        n_panel.add(in_hostLabel);
+        n_panel.add(in_hostField);
         n_panel.add(incomingLabel);
         n_panel.add(incomingOptions);
         n_panel.add(outgoingLabel);
@@ -119,6 +126,7 @@ public class ConfigurationDlg extends JDialog {
         final ConfigurationDlg t = this;
 
         button.addActionListener(new ActionListener(){
+                        @Override
 			public void actionPerformed(ActionEvent e) {
 				
 				MailAccount account = validateAndBuild();
@@ -227,6 +235,7 @@ public class ConfigurationDlg extends JDialog {
 			account.setAccountPassword(password);
 			account.setFullname(nameField.getText());
 			account.setHost(hostField.getText());
+                        account.setInHost(in_hostField.getText());
 			account.setUseSSL(true);
 			account.setUseTLS(tlsBox.isSelected());
 			int port = Integer.parseInt(portField.getText());

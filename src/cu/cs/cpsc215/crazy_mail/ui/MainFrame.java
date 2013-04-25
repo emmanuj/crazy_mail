@@ -4,6 +4,7 @@ import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.contacts.ViewContactsState;
 import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
+import cu.cs.cpsc215.crazy_mail.ui.messages.SendState;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -181,7 +182,7 @@ public class MainFrame extends JFrame{
                     }
                     
                     if(list.getSelectedIndex() == 2){
-                        //switchState(InboxState.get());
+                        switchState(SendState.get());
                     }
                     
                 }

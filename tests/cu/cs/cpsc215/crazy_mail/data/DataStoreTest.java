@@ -99,8 +99,8 @@ public class DataStoreTest {
         String email = "";
         DataStore instance = null;
         Contact expResult = null;
-        Contact result = instance.getContact(email);
-        assertEquals(expResult, result);
+//        Contact result = instance.getContact(email);
+  //      assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -127,8 +127,8 @@ public class DataStoreTest {
     public void testInitDataStore() {
         System.out.println("initDataStore");
         DataStore expResult = null;
-        DataStore result = DataStore.initDataStore();
-        assertEquals(expResult, result);
+        //DataStore result = DataStore.initDataStore();
+      // ??assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -167,8 +167,8 @@ public class DataStoreTest {
         String email = "";
         DataStore instance = null;
         ArrayList expResult = null;
-        ArrayList result = instance.findAllByEmail(email);
-        assertEquals(expResult, result);
+////        ArrayList result = instance.findAllByEmail(email);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -182,8 +182,8 @@ public class DataStoreTest {
         String firstname = "";
         DataStore instance = null;
         ArrayList expResult = null;
-        ArrayList result = instance.findAllByFirstname(firstname);
-        assertEquals(expResult, result);
+//        ArrayList result = instance.findAllByFirstname(firstname);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -197,8 +197,8 @@ public class DataStoreTest {
         String lastname = "";
         DataStore instance = null;
         ArrayList expResult = null;
-        ArrayList result = instance.findAllByLastname(lastname);
-        assertEquals(expResult, result);
+//        ArrayList result = instance.findAllByLastname(lastname);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -212,8 +212,8 @@ public class DataStoreTest {
         String city = "";
         DataStore instance = null;
         ArrayList expResult = null;
-        ArrayList result = instance.findAllByCity(city);
-        assertEquals(expResult, result);
+//        ArrayList result = instance.findAllByCity(city);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -227,8 +227,8 @@ public class DataStoreTest {
         String state = "";
         DataStore instance = null;
         ArrayList expResult = null;
-        ArrayList result = instance.findAllByState(state);
-        assertEquals(expResult, result);
+        //ArrayList result = instance.findAllByState(state);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -242,8 +242,8 @@ public class DataStoreTest {
         String zip = "";
         DataStore instance = null;
         ArrayList expResult = null;
-        ArrayList result = instance.findAllByZip(zip);
-        assertEquals(expResult, result);
+//        ArrayList result = instance.findAllByZip(zip);
+  //      assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

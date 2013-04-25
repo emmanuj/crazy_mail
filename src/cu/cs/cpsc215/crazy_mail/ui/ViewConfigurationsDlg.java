@@ -192,6 +192,7 @@ public class ViewConfigurationsDlg extends JDialog{
 		 
 		//Delete
 		deleteButton.addActionListener(new ActionListener(){
+                        @Override
 			public void actionPerformed(ActionEvent arg0){
 				int remove = JOptionPane.showConfirmDialog(t,"Are you sure you want to delete the mail account?");
 				if(remove == JOptionPane.YES_OPTION)
@@ -207,6 +208,7 @@ public class ViewConfigurationsDlg extends JDialog{
 		 
 		//Makes this the primary account
 		makePrimaryButton.addActionListener(new ActionListener(){
+                        @Override
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<MailAccount>accounts = DataStore.get().getAccounts();
 				int index = accountList.getSelectedIndex();
@@ -222,6 +224,7 @@ public class ViewConfigurationsDlg extends JDialog{
 		
 		//Done
 		doneButton.addActionListener(new ActionListener(){
+                        @Override
 			public void actionPerformed(ActionEvent arg0){
 				t.dispose();
 			}
@@ -241,6 +244,7 @@ public class ViewConfigurationsDlg extends JDialog{
 			String content = "<b>Name:</b> "+account.getFullname()+"<br/>"+
 					 		"<b>Email:</b> "+account.getAccountEmail()+"<br/>"+
 					 		"<b>Host:</b> "+account.getHost()+"<br/>"+
+					 		"<b>Outgoing Host:</b> "+account.getInHost()+"<br/>"+
 					 		"<b>Port:</b> "+account.getPort()+"<br/>"+
 					 		"<b>Incoming Protocol:</b> "+account.getIncomingMail()+"<br/>"+
 					 		"<b>Outgoing Protocol:</b> "+account.getOutgoingMail()+"<br/>";

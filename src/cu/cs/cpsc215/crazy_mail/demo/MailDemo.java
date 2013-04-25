@@ -1,18 +1,23 @@
 package cu.cs.cpsc215.crazy_mail.demo;
 
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
+import cu.cs.cpsc215.crazy_mail.ui.messages.MailViewer;
+import cu.cs.cpsc215.crazy_mail.ui.messages.MultipartViewer;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.CommandInfo;
 import javax.activation.DataHandler;
 import javax.mail.Authenticator;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
+import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
@@ -23,7 +28,10 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 /**
  *
@@ -40,6 +48,8 @@ public final class MailDemo {
             Logger.getLogger(MailDemo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {
             Logger.getLogger(MailDemo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MailDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -50,40 +60,90 @@ public final class MailDemo {
     public static void main(String argv[]){
         new MailDemo();
     }
-    public void retrieveEmail() throws NoSuchProviderException, MessagingException{
+    public void retrieveEmail() throws NoSuchProviderException, MessagingException, MessagingException, IOException{
         Properties props = getConf();
         //props.put("mail.imap.port","993");
         
         //create session object from properties file
-        Session session = Session.getDefaultInstance(props,null);
+        Session session = Session.getDefaultInstance(System.getProperties(),null);
         
         //get store object
         Store store = session.getStore("imaps");
         
-        store.connect("imap.gmail.com", "emmanuj@g.clemson.edu", "unekwu01");
+        store.connect("imap.gmail.com", "", "");
         
         System.out.println(store);
         
         //create folder
         Folder inbox = store.getFolder("INBOX");
         
-        inbox.open(Folder.READ_WRITE);
+        inbox.open(Folder.READ_ONLY);
         
         Message [] messages = inbox.getMessages();
         
+        //messageViewer(messages[3]).setVisible(true);
+        //return;
+        
+        DataHandler d = null;
+        CommandInfo in=null;
         for(Message message: messages){
-            System.out.println(message.getContentType());
+            
+            
+            //message.
+            d = message.getDataHandler();
+            
+            in = d.getCommand("view");
+            System.out.println(in);
+            //for(CommandInfo i : d.getAllCommands())
+              //  System.out.println(message.getMessageNumber()+":"+i.getCommandName());
+//            if(message.getContentType().contains("HTML")){
+//                 messageViewer(message).setVisible(true);
+//                 break;
+//            }
+            
+                
         }
         
-        
+       
         
         
         
     }
-    public JFrame messageViewer(){
+    public static String getMessageContent(Message message) throws IOException, MessagingException
+      {
+        Object content = message.getContent();
+        if (content instanceof Multipart) {
+            StringBuffer messageContent = new StringBuffer();
+            Multipart multipart = (Multipart) content;
+            for (int i = 0; i < multipart.getCount(); i++) {
+                Part part = (Part) multipart.getBodyPart(i);
+                if (part.isMimeType("text/html")) {
+                    messageContent.append(part.getContent().toString());
+                }
+                
+            }
+            return messageContent.toString();
+        } else {
+            return content.toString();
+        }
+    }
+    public JFrame messageViewer(Message m) throws MessagingException, IOException{
+        JFrame frame = new JFrame();
+        JTextPane area = new JTextPane();
+        MailViewer viewer = new MailViewer();
+        viewer.setMessage(m);
+        //area.setEditable(false);
+        //area.setContentType("text/html");
+        //area.setText(getMessageContent(m));
+        
+        frame.add(viewer);
+        frame.setTitle(m.getSubject());
+        frame.setSize(700,600);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        return null;
+        return frame;
     }
     public Properties getConf(){
         Properties props = new Properties();
@@ -92,7 +152,7 @@ public final class MailDemo {
         //props.put("mail.store.protocol","imap");
         //props.put("mail.imap.host","imap.gmail.com");
         
-        props.put("mail.from", "john.emmanuel10@yahoo.com");
+        props.put("mail.from", "");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
@@ -107,7 +167,7 @@ public final class MailDemo {
     public void sendPlainMessage(String to, String subject, String content) throws AddressException, MessagingException, IOException{
         Properties props = new Properties();
         props.put("mail.transport.protocol","smtp");
-        props.put("mail.from", "john.emmanuel10@yahoo.com");
+        props.put("mail.from", "");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
@@ -117,13 +177,13 @@ public final class MailDemo {
         Session session = Session.getInstance(props,new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication("physicistjohn@gmail.com","unekwu01");
+                return new PasswordAuthentication("","");
             }
         });
         
        
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
+        msg.setFrom(new InternetAddress(""));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         msg.setText(content);
@@ -135,7 +195,7 @@ public final class MailDemo {
     public void sendWithAttachment(String to, String subject, String content) throws AddressException, MessagingException, IOException{
         Properties props = new Properties();
         props.put("mail.transport.protocol","smtp");
-        props.put("mail.from", "john.emmanuel10@yahoo.com");
+        props.put("mail.from", "");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.socketFactory.class",
@@ -153,7 +213,7 @@ public final class MailDemo {
         Session session = Session.getInstance(props,new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication("physicistjohn@gmail.com","unekwu01");
+                return new PasswordAuthentication("","");
             }
         });
         
@@ -164,7 +224,7 @@ public final class MailDemo {
         trans.addTransportListener(listener);
         
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
+        msg.setFrom(new InternetAddress(""));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         //msg.setText(content);
@@ -198,7 +258,7 @@ public final class MailDemo {
     public void sendHTMLWithAttachment(String to, String subject, String content) throws AddressException, MessagingException, IOException{
         Properties props = new Properties();
         props.put("mail.transport.protocol","smtp");
-        props.put("mail.from", "john.emmanuel10@yahoo.com");
+        props.put("mail.from", "");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.socketFactory.class",
@@ -210,13 +270,13 @@ public final class MailDemo {
         Session session = Session.getInstance(props,new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication("physicistjohn@gmail.com","unekwu01");
+                return new PasswordAuthentication("","");
             }
         });
         
        
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("john.emmanuel10@yahoo.com"));
+        msg.setFrom(new InternetAddress(""));
         msg.setSubject(subject);
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         

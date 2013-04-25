@@ -21,6 +21,15 @@ public class Configuration implements Serializable {
     private int port = 465;
     private boolean useTLS = true;
     private boolean useSSL = true;
+    private String inHost;
+
+    public String getInHost() {
+        return inHost;
+    }
+
+    public void setInHost(String inHost) {
+        this.inHost = inHost;
+    }
 
     public boolean isAuth() {
         return auth;

@@ -29,7 +29,7 @@ public class MailListener implements TransportListener, ConnectionListener {
     @Override
     public void messageDelivered(TransportEvent te) {
         System.out.println("Message Delivered");
-        
+        main.setStatus("Message Delivered");
         if(main!=null){
             final StatusWindow statusWindow = new StatusWindow(main,"Message Delievered :)");
             int numberOfMillisecondsInTheFuture = 10000; // 10 sec
@@ -41,9 +41,11 @@ public class MailListener implements TransportListener, ConnectionListener {
                     @Override
                     public void run() {
                         statusWindow.dispose();
+                        main.setStatus("Ready");
                     }
                 }, timeToClose);
             }
+        
     }
 
     @Override
