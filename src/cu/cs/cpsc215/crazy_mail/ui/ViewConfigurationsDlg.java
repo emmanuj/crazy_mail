@@ -253,16 +253,16 @@ public class ViewConfigurationsDlg extends JDialog{
 				content+="<i>SSL Secured</i><br/>";
 			}
 			 
-			 contentInfo.setText("<html><h3 style='margin:0px; margin-bottom:5px;'>Configuration Properties</h3>"+content+"</html>");
-			 makePrimaryButton.setVisible(true);
-			 if(accountList.getSelectedIndex()==0)
-			 {
-				 makePrimaryButton.setEnabled(false);
-			 }
-			 else
-			 {
-				 makePrimaryButton.setEnabled(true);
-			 }
+			contentInfo.setText("<html><h3 style='margin:0px; margin-bottom:5px;'>Configuration Properties</h3>"+content+"</html>");
+			makePrimaryButton.setVisible(true);
+			if(accountList.getSelectedIndex()==0)
+			{
+				makePrimaryButton.setEnabled(false);
+			}
+			else
+			{
+				makePrimaryButton.setEnabled(true);
+			}
 		}
 		else //Otherwise hide everything
 		{

@@ -133,6 +133,13 @@ public class ConfigurationDlg extends JDialog {
 						//Check that any edits were made
 						if(!account.equals(config))
 						{
+							//If so, make sure that they didn't edit to something already here
+							if(DataStore.get().getAccounts().contains(account))
+							{
+								JOptionPane.showMessageDialog(MainFrame.getInst(),"An account already exists with those values.","Error",JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+							
 							//Update the list in data store
 							int index = accounts.indexOf(config);
 							accounts.remove(index);
@@ -144,7 +151,7 @@ public class ConfigurationDlg extends JDialog {
 					{
 						if(DataStore.get().getAccounts().contains(account))
 						{
-							JOptionPane.showMessageDialog(MainFrame.getInst(),"An account already exists with these values.","Error",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(MainFrame.getInst(),"An account already exists with those values.","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 						

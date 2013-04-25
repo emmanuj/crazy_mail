@@ -119,6 +119,7 @@ public class ViewContactsState implements FrameState{
 				 }
 			   }
 			});
+		
 	}
 	
 	//Buttony things
@@ -176,6 +177,7 @@ public class ViewContactsState implements FrameState{
 				int remove = JOptionPane.showConfirmDialog(ViewContactsState.get().getPanel(),"Are you sure you want to delete the contact \""+name+"\"?");
 				if(remove == JOptionPane.YES_OPTION)
 				{
+					contacts.remove(row);
 					DataStore.get().setContacts(contacts);
 					updateTable();
 					buttonMediator.setHasSelectedOption(false);
