@@ -26,7 +26,8 @@ import javax.swing.JScrollPane;
  * @author Emmanuel
  */
 public class MailViewer extends JPanel implements CommandObject {
-    private String action;
+	private static final long serialVersionUID = 4667302470498209982L;
+	private String action;
     private DataHandler datahandler;
     private Message m_message;
     private Component body_component;

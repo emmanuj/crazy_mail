@@ -23,17 +23,11 @@ public class Validator {
         if(parsedEmail.length!=2)
             return false;
         
-        String user = parsedEmail[0];
-        
-        //String [] secondPart = parsedEmail[1];
-        
+        String user = parsedEmail[0];        
         
         if(user.equals("") ){
             return false;
         }
-        
-        
-        
         
         if(!email.contains("@"))
         {

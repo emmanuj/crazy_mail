@@ -5,7 +5,6 @@
 package cu.cs.cpsc215.crazy_mail.mail;
 
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +28,7 @@ import javax.mail.internet.MimeMultipart;
  */
 public class MultiPartEmail extends Email {
     
-    private ArrayList<EmailAttachment> attachments = new ArrayList();
+    private ArrayList<EmailAttachment> attachments = new ArrayList<EmailAttachment>();
     public ArrayList<EmailAttachment> getAttachments() {
         return attachments;
     }

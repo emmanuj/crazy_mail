@@ -6,9 +6,6 @@ package cu.cs.cpsc215.crazy_mail.mail;
 
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
-import static cu.cs.cpsc215.crazy_mail.util.Protocol.IMAPS;
-import static cu.cs.cpsc215.crazy_mail.util.Protocol.SMTP;
-import static cu.cs.cpsc215.crazy_mail.util.Protocol.SMTPS;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -193,7 +190,6 @@ public class Email implements Mail {
         
         boolean auth = mailaccount.isAuth();
         Protocol sendProtocol = mailaccount.getOutgoingMail();
-        Protocol recieveProtocol = mailaccount.getIncomingMail();
         String host = mailaccount.getHost();
         int port = mailaccount.getPort();
         String pwd = mailaccount.getAccountPassword();

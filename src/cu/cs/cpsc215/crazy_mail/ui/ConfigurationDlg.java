@@ -51,12 +51,12 @@ public class ConfigurationDlg extends JDialog {
 		
 		JLabel nameLabel = new JLabel("Name");
 		JLabel emailLabel = new JLabel("Email");
-        JLabel hostLabel = new JLabel("Smtp Host");
+        JLabel hostLabel = new JLabel("SMTP Host");
         JLabel portLabel = new JLabel("Port");
         JLabel passwordLabel = new JLabel("Password");
         JLabel incomingLabel = new JLabel("Incoming Protocol");
         JLabel outgoingLabel = new JLabel("Outgoing Protocol");
-        JLabel in_hostLabel = new JLabel("Incoming msg host");
+        JLabel in_hostLabel = new JLabel("<html>Incoming Mail Host<br/><div style='width:150px;'><i>This is used to read incoming emails.</i></div></html>");
         JLabel useTLS = new JLabel("Use TLS");
         JLabel useSSL = new JLabel("Use SSL");
         
@@ -68,7 +68,7 @@ public class ConfigurationDlg extends JDialog {
         in_hostField.setText("(Optional)");
         portField = new JTextField(20);
         portField.setText("465");
-        Protocol[] iOptions = {Protocol.IMAP,Protocol.IMAPS,Protocol.POP3,Protocol.POP3S};
+        Protocol[] iOptions = {Protocol.IMAPS,Protocol.IMAP,Protocol.POP3,Protocol.POP3S};
         Protocol[] oOptions = {Protocol.SMTP,Protocol.SMTPS};
         incomingOptions = new JComboBox(iOptions);
         outgoingOptions = new JComboBox(oOptions);
@@ -85,7 +85,7 @@ public class ConfigurationDlg extends JDialog {
         	emailField.setText(configuration.getAccountEmail());
         	passwordField.setText(configuration.getAccountPassword());
 	        hostField.setText(configuration.getHost());
-                in_hostField.setText(configuration.getInHost());
+            in_hostField.setText(configuration.getInHost());
 	        portField.setText(""+configuration.getPort());
 	        tlsBox.setSelected(configuration.isUseTLS());
 	        sslBox.setSelected(configuration.isUseSSL());
@@ -177,7 +177,7 @@ public class ConfigurationDlg extends JDialog {
         });
         
         //Message for adding clemson accounts
-        this.add(new JLabel("<html><div width='300px' style='padding:5px; padding-bottom:0px; margin:auto; text-align:center;'>To connect to a Clemson account, fill in your email and <b>gmail</b> password, then set the mailhost to mailhost.cs.clemson.edu<hr/></div></html>"),"North");
+        this.add(new JLabel("<html><div width='350px' style='padding:5px; padding-bottom:0px; margin:auto; text-align:center;'>To connect to a Clemson account, fill in your email and <b>gmail</b> password, then set the SMTP host to mailhost.cs.clemson.edu.<br/><br/>To receive email, use @g.clemson.edu, and set the incoming host to imap.gmail.com.<hr/></div></html>"),"North");
         this.add(n_panel,"Center");
         if(config == null)
         {
@@ -193,7 +193,15 @@ public class ConfigurationDlg extends JDialog {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setVisible(true);
 	}
-	
+	public void dispose()
+	{
+		ArrayList<MailAccount>oldaccounts = (ArrayList<MailAccount>) DataStore.get().getAccounts().clone();
+		if(parentDlg == null)
+		{
+			InboxState.get().updateAccountList(oldaccounts,DataStore.get().getAccounts());
+		}
+		super.dispose();
+	}
 	private MailAccount validateAndBuild()
 	{
 		

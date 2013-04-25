@@ -154,11 +154,8 @@ public class MainFrame extends JFrame{
                 }
             
             });
-            
-            JButton retrievebtn = new JButton("Get");
-            
+                        
             n_panel.add(composebtn);
-            //n_panel.add(retrievebtn);
             
             JPanel c_panel = new JPanel();
             c_panel.setLayout(new BorderLayout());
@@ -182,8 +179,7 @@ public class MainFrame extends JFrame{
                     }
                     
                     if(list.getSelectedIndex() == 2){
-                        //switchState(SendState.get());
-                        JOptionPane.showMessageDialog(MainFrame.this, "This feature is not yet available");
+                        JOptionPane.showMessageDialog(MainFrame.this, "This feature is not yet available.");
                     }
                     
                 }

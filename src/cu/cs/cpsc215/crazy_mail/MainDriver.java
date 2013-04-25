@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
@@ -22,35 +21,34 @@ import javax.swing.UIManager;
  **/
 public class MainDriver {
 	public static void main(String[] args) {
+		
 		System.out.println("Starting program");
-               // DataStore ds = DataStore.initDataStore();//This will happen here so that all contacts are loaded
-		SwingUtilities.invokeLater(new Runnable(){
-                    @Override
-                    public void run(){
-                        try{
-                           UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-                        }catch(Exception ex){
-                            try {
-                                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                            } catch (Exception ex1) {
-                                Logger.getLogger(MainDriver.class.getName()).log(Level.SEVERE, null, ex1);
-                            } 
-                        }
-                        MainFrame.init();
-                        
-                        //Make a config dialog if there aren't any saved configurations
-                        if(DataStore.get().getAccounts().size() == 0)
-                        {
-                        	new ConfigurationDlg(null,null);
-                        }
-                    }
-                });
+		
+		//Look and feel
+		try{
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+         }catch(Exception ex){
+             try {
+                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+             } catch (Exception ex1) {
+            	 Logger.getLogger(MainDriver.class.getName()).log(Level.SEVERE, null, ex1);
+             } 
+         }
+		
+		//Init
+        MainFrame.init();
+         
+        //Make a config dialog if there aren't any saved configurations
+        if(DataStore.get().getAccounts().size() == 0)
+        {
+        	new ConfigurationDlg(null,null);
+        }
                 
 	}
 	
 	public static void shutdown()
 	{
-		
+		//Try to save  everything in data store
 		try {
 			DataStore.get().saveAll();
 		} catch (IOException e) {

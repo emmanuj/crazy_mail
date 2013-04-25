@@ -20,8 +20,6 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -30,7 +28,6 @@ import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
@@ -41,7 +38,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -49,15 +45,17 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  *
- * @author Emmanuel
+ * @author Emmanuel John
+ * @author Kevin Jett
+ * 
  */
 public class InboxState implements FrameState {
     private JPanel main_panel;
     private JPanel c_panel;
     private static InboxState inst;
     private JPanel message_panel;
-    private ArrayList<Component> states = new ArrayList();
-    private HashMap<MailAccount, DefaultListModel<Message>> account_map = new HashMap();
+    private ArrayList<Component> states = new ArrayList<Component>();
+    private HashMap<MailAccount, DefaultListModel> account_map = new HashMap<MailAccount, DefaultListModel>();
     private JComboBox accountsBox;
     private JTextPane textpane;
     private JList messagelist;
@@ -136,27 +134,30 @@ public class InboxState implements FrameState {
         MailAccount account = (MailAccount) accountsBox.getSelectedItem();
         DefaultListModel model = account_map.get(account);
         
-        messagelist = new JList();
-        messagelist.setModel(model);
-    
-        messagelist.setFixedCellHeight(60);
-        messagelist.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                try {
-                    Message msg = (Message)messagelist.getSelectedValue();
-                    //System.out.println(msg.getSubject());
-                    textpane.setText(getMessageContent((Message)messagelist.getSelectedValue()));
-                } catch (IOException ex) {
-                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MessagingException ex) {
-                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+        if(model != null)
+        {
         
-        messagelist.setCellRenderer(new MessageListCellRenderer());
+	        messagelist = new JList();
+	        messagelist.setModel(model);
+	    
+	        messagelist.setFixedCellHeight(60);
+	        messagelist.addListSelectionListener(new ListSelectionListener() {
+	
+	            @Override
+	            public void valueChanged(ListSelectionEvent e) {
+	                try {
+	                    Message msg = (Message)messagelist.getSelectedValue();
+	                    textpane.setText(getMessageContent((Message)messagelist.getSelectedValue()));
+	                } catch (IOException ex) {
+	                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
+	                } catch (MessagingException ex) {
+	                    Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
+	                }
+	            }
+	        });
+	        
+	        messagelist.setCellRenderer(new MessageListCellRenderer());
+        }
         panel.add(new JScrollPane(messagelist));
         
         
@@ -184,7 +185,7 @@ public class InboxState implements FrameState {
         
         return panel;
     }
-    public synchronized void loadMessages(MailAccount account, DefaultListModel<Message> model) {
+    public synchronized void loadMessages(MailAccount account, DefaultListModel model) {
         MainFrame.getInst().setStatus("Downloading messages for "+ account +"...");
         Properties props = System.getProperties();
         
@@ -199,10 +200,16 @@ public class InboxState implements FrameState {
 
             inbox.open(Folder.READ_ONLY);
 
-            Message [] messages = inbox.getMessages();
-
-            for(Message msg: messages){
-                model.addElement(msg);
+            int min;
+            min = inbox.getMessageCount()-50;
+            if(min <=0)
+            {
+            	min = 1;
+            }
+            Message [] messages = inbox.getMessages(min,inbox.getMessageCount());
+            
+            for(int i = messages.length-1; i>=0; i--){
+                model.addElement(messages[i]);
             }
             
             
@@ -210,13 +217,16 @@ public class InboxState implements FrameState {
             if(!account.getInHost().equals(""))
                 JOptionPane.showMessageDialog(MainFrame.getInst(),"Invalid incoming mail Configuration for mail account: "+ account);
         }
-        MainFrame.getInst().setStatus("Done downloading messages for "+ account);
         MainFrame.getInst().setStatus("Ready");
     }
     public static String getMessageContent(Message message) throws IOException, MessagingException
-      {
+    {
+    	//If message is invalid, return nothing
+    	if(message == null)
+    		return "";
+    	
         Object content = message.getContent();
-        //System.out.println(content);
+
         if (content instanceof Multipart) {
             StringBuffer messageContent = new StringBuffer();
             Multipart multipart = (Multipart) content;
@@ -232,10 +242,10 @@ public class InboxState implements FrameState {
             return content.toString();
         }
     }
-    public JPanel createNorthPanel(HashMap<MailAccount, DefaultListModel<Message>> accounts){
+    public JPanel createNorthPanel(HashMap<MailAccount, DefaultListModel> accounts){
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        accountsBox = new JComboBox(accounts.keySet().toArray());
+        accountsBox = new JComboBox(DataStore.get().getAccounts().toArray());
         accountsBox.addItemListener(new ItemListener(){
 
             @Override
@@ -244,7 +254,9 @@ public class InboxState implements FrameState {
                 SwingUtilities.invokeLater(new Runnable(){
                     @Override
                     public void run(){
-                        messagelist.setModel(account_map.get(account));
+                    	DefaultListModel model = account_map.get(account);
+                        if(model!=null)
+                        	messagelist.setModel(model);
                     }
                 });
                 
@@ -258,63 +270,53 @@ public class InboxState implements FrameState {
         return panel;
     }
     
+    //This updates the account listing and properties in the inbox. Requires a list of the old accounts for comparison
     public void updateAccountList(final ArrayList<MailAccount>oldAccounts, final ArrayList<MailAccount> accounts){
-       Set<MailAccount> stored = account_map.keySet();
-      
-       for(int i = 0; i<oldAccounts.size(); i++)
+      Set<MailAccount> stored = account_map.keySet();
+       
+      //Remove anything from the map that was in old accounts but not new
+      for(int i = 0; i<oldAccounts.size(); i++)
        {
            MailAccount old = oldAccounts.get(i);
            if(!accounts.contains(old))
            {
-               oldAccounts.remove(i);
                account_map.remove(old);
-               accountsBox.removeItem(old);
-               accountsBox.removeItem(old);
-               i--;
            }
        }
+       accountsBox.removeAllItems(); //Remove all from the dropdown since we will rebuild it
        
+       //For every account
        for(int i = 0; i<accounts.size(); i++)
        {
-           if(!stored.contains(accounts.get(i)));
+    	   final MailAccount account = accounts.get(i);
+    	   
+           if(!stored.contains(accounts.get(i))) //If we don't have a listing for it, making a new thread to retrieve its mail
            {
-               final MailAccount account = accounts.get(i);
-                account_map.put(account, new DefaultListModel());
-                accountsBox.addItem(account);
+              account_map.put(account, new DefaultListModel());
                new Thread(new Runnable(){
-                                    @Override
-                                    public void run(){
-                                        
-                                            loadMessages(account, account_map.get(account));
-                                        
-                                    }
-                                }).start();
+	                @Override
+	                public void run(){
+	                        loadMessages(account, account_map.get(account));                     
+	                }
+	            }).start();
            }
+           
+           accountsBox.addItem(account); //Also add to the dropdown
        }
-       //main_panel.validate();
        accountsBox.validate();
        MainFrame.getInst().repaint();
     }
     
-    @Override
-    public void onHide() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void onHide() {}
 
-    @Override
-    public void onShow() {
-        //updateAccountList();
-    }
+    public void onShow() {}
 
-    @Override
     public String getName() {
-        return "Inbox";//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "Inbox";
     }
 
-    @Override
     public JPanel getPanel() {
         return main_panel;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

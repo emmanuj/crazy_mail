@@ -54,7 +54,7 @@ public class EmailTransmissionDlg extends JDialog {
     private JTextField ccfield;
     private JTextField tofield;
     private JComboBox fromcbox;
-    private ArrayList<EmailAttachment> attachments = new ArrayList();
+    private ArrayList<EmailAttachment> attachments = new ArrayList<EmailAttachment>();
     private static int count = 0;
     private JPanel attachment_panel;
     public EmailTransmissionDlg(MainFrame parent){

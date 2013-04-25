@@ -1,7 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.data;
 
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
-import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import java.io.IOException;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
@@ -28,7 +27,11 @@ import javax.swing.JOptionPane;
 */
 
 public final class DataStore{
-
+    private ArrayList<Contact> contacts;
+    private Configuration config;
+    private ArrayList<MailAccount> mailaccounts = new ArrayList<MailAccount>();
+    private static DataStore store;
+    
 	//Singleton
 	public static DataStore get(){
 	    if(store == null)
@@ -36,28 +39,7 @@ public final class DataStore{
 	    
 	    return store;
 	}
-
-	//Getters
-	public ArrayList<MailAccount> getAccounts(){
-		return mailaccounts;
-	}
-
-    public ArrayList<Contact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(ArrayList<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
-    public Configuration getPrimaryAccount(String accountEmail) {
-        return config;
-    }
-    
-    public Contact getContact(int id){
-        return contacts.get(id);
-    }
-    
+	
     private DataStore(){
     	File f = new File("cdb.dat");
     	
@@ -85,7 +67,24 @@ public final class DataStore{
             Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        
+
+	//Getters
+	public ArrayList<MailAccount> getAccounts(){
+		return mailaccounts;
+	}
+
+    public ArrayList<Contact> getContacts() {
+        return contacts;
+    }
+
+    public Configuration getPrimaryAccount(String accountEmail) {
+        return config;
+    }
+    
+    public Contact getContact(int id){
+        return contacts.get(id);
+    }
+            
     public void addContact(Contact c)
     {
     	c.setContactID(generateId());
@@ -96,11 +95,48 @@ public final class DataStore{
     {
     	if(mailaccounts.contains(mailAccount))
             return;
-        ArrayList<MailAccount>old = (ArrayList<MailAccount>) mailaccounts.clone();
+    	
     	mailaccounts.add(mailAccount);
-        InboxState.get().updateAccountList(old,mailaccounts);
+    }
+        
+    public void addMailAccount(MailAccount account)
+    {
+    	mailaccounts.add(account);
     }
     
+    public void setAccounts(ArrayList<MailAccount> accounts)
+    {
+    	mailaccounts = accounts;        
+    }
+    
+    public void setContacts(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
+    }
+    
+
+    
+    public void setPrimary(MailAccount account)
+    {
+    	if(mailaccounts.contains(account))
+    	{
+    		int index = mailaccounts.indexOf(account);
+    		mailaccounts.remove(index);
+    	}
+    	mailaccounts.add(0,account);
+    	config = account;
+    }
+    
+    private long generateId(){
+        
+        long idx = 1;
+        if(contacts.size()>=1){
+            idx = contacts.size()+1;
+        }
+        
+        return idx;
+    }
+    
+    //Loading...
     public void loadAll() throws IOException, ClassNotFoundException{
     	contacts = new ArrayList<Contact>();
     	mailaccounts = new ArrayList<MailAccount>();
@@ -117,6 +153,7 @@ public final class DataStore{
         is.close();
     }
         
+    //Saving...
     public void saveAll() throws IOException
     {
         ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("fdb.config"));
@@ -124,44 +161,4 @@ public final class DataStore{
         os.writeObject(mailaccounts);
         os.close();
     }
-    
-   
-    
-    private long generateId(){
-        
-        long idx = 1;
-        if(contacts.size()>=1){
-            idx = contacts.size()+1;
-        }
-        
-        return idx;
-    }
-    
-    public void setAccounts(ArrayList<MailAccount> accounts)
-    {
-    	mailaccounts = accounts;        
-    }
-    
-    public void addMailAccount(MailAccount account)
-    {
-        ArrayList<MailAccount>old = (ArrayList<MailAccount>) mailaccounts.clone();
-    	mailaccounts.add(account);
-        InboxState.get().updateAccountList(old,mailaccounts);
-    }
-    
-    public void setPrimary(MailAccount account)
-    {
-    	if(mailaccounts.contains(account))
-    	{
-    		int index = mailaccounts.indexOf(account);
-    		mailaccounts.remove(index);
-    	}
-    	mailaccounts.add(0,account);
-    	config = account;
-    }
-    
-    private ArrayList<Contact> contacts;
-    private Configuration config;
-    private ArrayList<MailAccount> mailaccounts = new ArrayList<MailAccount>();
-    private static DataStore store;
 }

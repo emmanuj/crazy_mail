@@ -40,7 +40,7 @@ public class ViewConfigurationsDlg extends JDialog{
 	private AddEditDeleteMediator buttonMediator;
 	private DefaultListModel listModel;
 	private JLabel contentInfo;
-	
+	private ArrayList<MailAccount> oldaccounts;
 	public ViewConfigurationsDlg(MainFrame parent)
 	{
 		super(parent);
@@ -48,6 +48,7 @@ public class ViewConfigurationsDlg extends JDialog{
 		//Set parent, and modal to true
 		this.setModal(true);
 		 
+		oldaccounts = (ArrayList<MailAccount>) DataStore.get().getAccounts().clone();
 		//Make the panels
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -226,7 +227,6 @@ public class ViewConfigurationsDlg extends JDialog{
 		
 		//Done
 		doneButton.addActionListener(new ActionListener(){
-                        @Override
 			public void actionPerformed(ActionEvent arg0){
 				t.dispose();
 			}
@@ -277,6 +277,11 @@ public class ViewConfigurationsDlg extends JDialog{
 		}
 	 }
 	 
+	public void dispose()
+	{
+		InboxState.get().updateAccountList(oldaccounts,DataStore.get().getAccounts());
+		super.dispose();
+	}
 	 public void updateList()
 	 {
 		 listModel.clear();
