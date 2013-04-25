@@ -3,8 +3,7 @@ package cu.cs.cpsc215.crazy_mail.ui;
 import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.contacts.ViewContactsState;
-import cu.cs.cpsc215.crazy_mail.util.MailAccount;
-import cu.cs.cpsc215.crazy_mail.util.Protocol;
+import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -35,7 +33,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 
-import cu.cs.cpsc215.crazy_mail.util.Configuration;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 /**
  * 
  * @author Kevin Jett
@@ -65,6 +64,9 @@ public class MainFrame extends JFrame{
     private BufferedImage iconImage;
     
 	public static void init(){
+		if(inst != null)
+			return;
+					
 		inst = new MainFrame();
 		inst.setVisible(true);
 		inst.sizeGlobalElements();
@@ -72,7 +74,7 @@ public class MainFrame extends JFrame{
 		//Show a message if the user hasn't made any accounts
         if(DataStore.get().getAccounts().size() == 0)
         {
-        	new ConfigurationDlg(null, null);
+        	//new ConfigurationDlg(null, null);
         }
 	}
 	public static MainFrame getInst(){
@@ -86,7 +88,7 @@ public class MainFrame extends JFrame{
             stateMap = new HashMap<String,FrameState>();
             
             setTitle("Crazy Mail");
-            setSize(d.width-70,d.height-100);
+            setSize(d.width-300,d.height-300);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setIcon();
@@ -96,12 +98,15 @@ public class MainFrame extends JFrame{
             
             final MainFrame t = this;
             this.addWindowListener(new WindowAdapter() {
+                @Override
                 public void windowClosing(WindowEvent e) {
                     t.dispose();
                     MainDriver.shutdown();
                 }
 
             });
+            
+            
 	}
 	
 	//Makes the global elements for the layout
@@ -125,7 +130,8 @@ public class MainFrame extends JFrame{
 	public JPanel createStatusPane(){
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new FlowLayout(FlowLayout.LEADING));
-	    statuslabel = new JLabel("Downloading... 90%");
+            panel.setPreferredSize(new Dimension(this.getWidth(), 55));
+	    statuslabel = new JLabel("Ready");
 	    panel.add(statuslabel);
 	    
 	    return panel;
@@ -139,10 +145,11 @@ public class MainFrame extends JFrame{
             JPanel n_panel = new JPanel();
             n_panel.setLayout(new FlowLayout(FlowLayout.LEADING));
             JButton composebtn = new JButton("New");
+            
             composebtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae){
-                    EmailTransmissionDlg emailTransmissionDlg = new EmailTransmissionDlg(MainFrame.this);
+                    new EmailTransmissionDlg(MainFrame.this);
                 }
             
             });
@@ -154,12 +161,32 @@ public class MainFrame extends JFrame{
             
             JPanel c_panel = new JPanel();
             c_panel.setLayout(new BorderLayout());
-            JList list = new JList(new String[]{"Contacts","Inbox",
-                "Sent", "Trash"});
+            final JList list = new JList(new String[]{"Contacts","Inbox",
+                "Sent"});
             list.setBackground(null);
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setFixedCellHeight(50);
             list.setSelectedIndex(0);
+            
+            list.addListSelectionListener(new ListSelectionListener() {
+
+                @Override
+                public void valueChanged(ListSelectionEvent lse) {
+                    if(list.getSelectedIndex()==0){
+                        switchState(ViewContactsState.get());
+                    }
+                    
+                    if(list.getSelectedIndex() == 1){
+                        switchState(InboxState.get());
+                    }
+                    
+                    if(list.getSelectedIndex() == 2){
+                        //switchState(InboxState.get());
+                    }
+                    
+                }
+            });
+            
             c_panel.add(new JScrollPane(list));
             
             main_panel.add(n_panel, "North");
@@ -272,9 +299,12 @@ public class MainFrame extends JFrame{
     	
     	//If there is a current state, remove and hide it
     	if(currentState != null)
-    	{
+    	{       
     		mainPanel.removeAll();
     		currentState.onHide();
+                
+                mainPanel.validate();
+                mainPanel.repaint();
     	}
     	
     	//Try to retrieve state from existing map
@@ -289,10 +319,16 @@ public class MainFrame extends JFrame{
     	}
     	
     	//Add to main panel
+               
 		mainPanel.add(currentState.getPanel());
 		currentState.onShow();
-    	mainPanel.setBackground(new Color(240,255,240));
+                mainPanel.setBackground(new Color(240,255,240));
+                
+                mainPanel.validate();
+                mainPanel.repaint();
     		
     }
+    
+    
 
 }

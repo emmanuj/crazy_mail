@@ -8,7 +8,7 @@ import cu.cs.cpsc215.crazy_mail.data.Contact;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 
 /**
-* 
+* Class to model the contact table
 * @author Kevin Jett
 * 
 */
@@ -17,10 +17,7 @@ public class ContactTableModel extends AbstractTableModel {
 	private String[] columnNames = {"Name","Email","Cell Phone","Home Phone","Address"};
 
 
-	public ContactTableModel()
-	{
-		
-	}
+	public ContactTableModel(){}
 
 	public String getColumnName(int col)
 	{
@@ -28,11 +25,10 @@ public class ContactTableModel extends AbstractTableModel {
 	}
 	public int getColumnCount() {
 		return columnNames.length;
-
 	}
 
 	public int getRowCount() {
-		return DataStore.initDataStore().getContacts().size();
+		return DataStore.get().getContacts().size();
 	}
 
 	public Object getValueAt(int arg0, int arg1) {

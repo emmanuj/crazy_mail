@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -14,14 +13,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+/**
+ * 
+ * @author Kevin Jett
+*/
+
 public class SystemInformationDlg extends JDialog {
+
+	private static final long serialVersionUID = -7391229034595790968L;
 	JLabel mainHTML;
 	public SystemInformationDlg(MainFrame parent)
 	{
 		super(parent);
 		Border padding = BorderFactory.createEmptyBorder(10,10,10,10);
 		String header = "<h2>Crazy Mail version 1.0</h2>";
-		String main = "<h3>About Crazy Mail</h3>This application was developed by Kevin and Emmanuel for Clemson's CpSc 215 course.";
+		String main = "<h3>About Crazy Mail</h3>This application was developed by Kevin Jett and Emmanuel John for Clemson's Software Development Foundations class.";
 		mainHTML = new JLabel("<html>"+header+main+"</html>");
 
 		mainHTML.setBorder(padding);
@@ -48,7 +54,7 @@ public class SystemInformationDlg extends JDialog {
 		});
 		
 		this.setTitle("About Crazy Mail");
-	    this.pack();
+	    this.setSize(550,475);
         this.setLocationRelativeTo(parent);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setModal(true);

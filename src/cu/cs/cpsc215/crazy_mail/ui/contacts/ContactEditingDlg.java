@@ -1,5 +1,6 @@
 package cu.cs.cpsc215.crazy_mail.ui.contacts;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,14 +12,17 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 import cu.cs.cpsc215.crazy_mail.data.Contact;
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
+
+/**
+ * 
+ * @author Kevin Jett
+*/
 
 public class ContactEditingDlg extends JDialog{
 	private static final long serialVersionUID = 6538858318123150195L;
@@ -42,6 +46,11 @@ public class ContactEditingDlg extends JDialog{
 		JLabel firstNameLabel = new JLabel("First Name");
 		JLabel lastNameLabel = new JLabel("Last Name");
 		JLabel emailLabel = new JLabel("Email");
+
+		Font bold = firstNameLabel.getFont().deriveFont(Font.BOLD);
+		firstNameLabel.setFont(bold);
+		emailLabel.setFont(bold);
+		
 		JLabel cellLabel = new JLabel("Cell Phone Number");
 		JLabel homeLabel = new JLabel("Home Phone Number");
 		JLabel addressLabel = new JLabel("Address");
@@ -150,7 +159,7 @@ public class ContactEditingDlg extends JDialog{
 		if(Validator.validateBlank(firstNameField.getText()))
 			contact.setFirstname(firstNameField.getText());
 		else
-			error_string+="The contact's first name was left blank. ";
+			error_string+="The contact's name was left blank. ";
 
 		contact.setLastname(lastNameField.getText()); //Last name is optional
 			

@@ -7,14 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,28 +20,31 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import net.miginfocom.swing.MigLayout;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
-import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
+/**
+ *
+ * @author Kevin Jett
+*/
+
 public class ViewConfigurationsDlg extends JDialog{
+	private static final long serialVersionUID = -939507760895083297L;
 	private JPanel mainPanel;
 	private JSplitPane splitPane;
 	private JList accountList;
 	private JButton addButton,editButton,deleteButton,makePrimaryButton,doneButton;
 	private JPanel content;
-	private MainFrame parent;
 	private AddEditDeleteMediator buttonMediator;
 	private DefaultListModel listModel;
 	private JLabel contentInfo;
+	
 	public ViewConfigurationsDlg(MainFrame parent)
 	{
-		super(MainFrame.getInst());
+		super(parent);
 		 
 		//Set parent, and modal to true
-		this.parent = parent;
 		this.setModal(true);
 		 
 		//Make the panels
@@ -253,16 +253,16 @@ public class ViewConfigurationsDlg extends JDialog{
 				content+="<i>SSL Secured</i><br/>";
 			}
 			 
-			 contentInfo.setText("<html><h3 style='margin:0px; margin-bottom:5px;'>Configuration Properties</h3>"+content+"</html>");
-			 makePrimaryButton.setVisible(true);
-			 if(accountList.getSelectedIndex()==0)
-			 {
-				 makePrimaryButton.setEnabled(false);
-			 }
-			 else
-			 {
-				 makePrimaryButton.setEnabled(true);
-			 }
+			contentInfo.setText("<html><h3 style='margin:0px; margin-bottom:5px;'>Configuration Properties</h3>"+content+"</html>");
+			makePrimaryButton.setVisible(true);
+			if(accountList.getSelectedIndex()==0)
+			{
+				makePrimaryButton.setEnabled(false);
+			}
+			else
+			{
+				makePrimaryButton.setEnabled(true);
+			}
 		}
 		else //Otherwise hide everything
 		{

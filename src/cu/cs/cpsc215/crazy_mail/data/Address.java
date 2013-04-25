@@ -1,9 +1,9 @@
 package cu.cs.cpsc215.crazy_mail.data;
 
 /**
-*@Author Emmanuel John
-*@Date 04/12/13
-*
+ *
+ * @author Kevin Jett
+ * @author Emmanuel John
 */
 import java.io.Serializable;
 
@@ -63,7 +63,7 @@ public class Address implements Serializable{
     }
     
     public String getFormattedString(){
-    	String return_string = "<html>";
+    	String return_string = "<html><div style='white-space: nowrap;'>";
     	return_string+=street;
     	return_string+="<br/>";
     	return_string+=city;
@@ -71,7 +71,7 @@ public class Address implements Serializable{
     	{
     		return_string+=", ";
     	}
-    	return_string+=state+" "+zip;
+    	return_string+=state+" "+zip+"</div></html>";
     	return return_string;
     }
     public static String[] getStates(){

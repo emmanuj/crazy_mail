@@ -9,7 +9,6 @@ import cu.cs.cpsc215.crazy_mail.mail.Email;
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -43,7 +42,8 @@ import net.miginfocom.swing.MigLayout;
  * @author Kevin Jett
  */
 public class EmailTransmissionDlg extends JDialog {
-    private JTextPane contentArea;
+	private static final long serialVersionUID = -6150072287819513573L;
+	private JTextPane contentArea;
     //private JTextField 
     private ArrayList<MailAccount> mailaccounts;
     private MainFrame parent;
@@ -67,7 +67,6 @@ public class EmailTransmissionDlg extends JDialog {
     	
         count++;
         this.parent = parent;
-        this.mailaccounts = mailaccounts;
 
         JPanel n_panel = new JPanel();
         n_panel.setLayout(new BorderLayout());

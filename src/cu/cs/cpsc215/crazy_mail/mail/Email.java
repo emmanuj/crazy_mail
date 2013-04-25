@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
-import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -118,7 +117,6 @@ public class Email implements Mail {
     public void addBCC(String email) throws AddressException{
         bcc.add(new InternetAddress(email));
     }
-    
     
     @Override
     public void sendEmail()throws AddressException, MessagingException, IOException {
