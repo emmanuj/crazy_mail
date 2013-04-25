@@ -129,11 +129,12 @@ public class EmailTransmissionDlg extends JDialog {
         });
         
         JButton attachbtn = new JButton("Attach");
+        attachbtn.setEnabled(false);
         attachbtn.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                attachAction();
+                //attachAction();
             }
         
         });
@@ -173,9 +174,9 @@ public class EmailTransmissionDlg extends JDialog {
         inputPanel.add(fromlabel);
         inputPanel.add(fromcbox);
         
-        attachment_panel = new JPanel(new MigLayout("wrap 5"));
+        //attachment_panel = new JPanel(new MigLayout("wrap 5"));
         
-        inputPanel.add(attachment_panel);
+        //inputPanel.add(attachment_panel);
         return inputPanel;
     }
     private JPanel createComposePanel(){
@@ -221,24 +222,18 @@ public class EmailTransmissionDlg extends JDialog {
             protected Object doInBackground() throws AddressException, MessagingException, IOException {
                 MailAccount userAccount = (MailAccount) fromcbox.getSelectedItem();
         
-                MultiPartEmail email = new MultiPartEmail(userAccount);
+                Email email = new Email(userAccount);
                 email.addTo(tofield.getText());
                 email.setSubject(subjfield.getText());
                 email.setMsg(contentArea.getText());
                 MailListener listener = new MailListener(parent);
                 email.setListener(listener);
-                
-                for(EmailAttachment at : attachments){
-                    email.attach(at);
-                }
-                
                 email.sendEmail();
-                
-                
 
                 return null;
             }
         };
+        
         parent.setStatus("Sending...");
         worker.execute();
         EmailTransmissionDlg.this.dispose();

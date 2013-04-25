@@ -2,7 +2,6 @@ package cu.cs.cpsc215.crazy_mail.demo;
 
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
 import cu.cs.cpsc215.crazy_mail.ui.messages.MailViewer;
-import cu.cs.cpsc215.crazy_mail.ui.messages.MultipartViewer;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -72,7 +71,7 @@ public final class MailDemo {
         
         store.connect("imap.gmail.com", "", "");
         
-        System.out.println(store);
+        //System.out.println(store);
         
         //create folder
         Folder inbox = store.getFolder("INBOX");

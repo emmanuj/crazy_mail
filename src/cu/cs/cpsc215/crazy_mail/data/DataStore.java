@@ -1,6 +1,7 @@
 package cu.cs.cpsc215.crazy_mail.data;
 
 import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
+import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 import cu.cs.cpsc215.crazy_mail.util.Configuration;
 import java.io.IOException;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
@@ -95,7 +96,9 @@ public final class DataStore{
     {
     	if(mailaccounts.contains(mailAccount))
             return;
+        ArrayList<MailAccount>old = (ArrayList<MailAccount>) mailaccounts.clone();
     	mailaccounts.add(mailAccount);
+        InboxState.get().updateAccountList(old,mailaccounts);
     }
     
     public void loadAll() throws IOException, ClassNotFoundException{
@@ -136,12 +139,14 @@ public final class DataStore{
     
     public void setAccounts(ArrayList<MailAccount> accounts)
     {
-    	mailaccounts = accounts;
+    	mailaccounts = accounts;        
     }
     
     public void addMailAccount(MailAccount account)
     {
+        ArrayList<MailAccount>old = (ArrayList<MailAccount>) mailaccounts.clone();
     	mailaccounts.add(account);
+        InboxState.get().updateAccountList(old,mailaccounts);
     }
     
     public void setPrimary(MailAccount account)

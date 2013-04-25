@@ -29,7 +29,6 @@ import javax.mail.internet.MimeMultipart;
  */
 public class MultiPartEmail extends Email {
     
-    private EmailAttachment attachment;
     private ArrayList<EmailAttachment> attachments = new ArrayList();
     public ArrayList<EmailAttachment> getAttachments() {
         return attachments;
@@ -84,18 +83,19 @@ public class MultiPartEmail extends Email {
         }
         
         mimeMsg.setContent(multipart_msg);
+        MailListener listener = getListener();
+        if(listener ==null)
+            listener =   new MailListener();
         
-        MailListener m_listener = new MailListener();
         transport = session.getTransport();
         //add transport listener and connection listener
-        transport.addConnectionListener(m_listener);
-        transport.addTransportListener(m_listener);
+        transport.addConnectionListener(listener);
+        transport.addTransportListener(listener);
         
         //connect to the host server
         transport.connect();
         
         try{
-            
             //send message
             transport.sendMessage(mimeMsg, mimeMsg.getAllRecipients());
         }finally{

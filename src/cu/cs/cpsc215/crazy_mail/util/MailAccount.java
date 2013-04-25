@@ -10,8 +10,8 @@ import java.io.Serializable;
  * 
  */
 public class MailAccount extends Configuration implements Serializable {
-	private static final long serialVersionUID = 160333513933669500L;
-	private String accountEmail;
+    private static final long serialVersionUID = 160333513933669500L;
+    private String accountEmail;
     private String accountPassword;
     private String fullname;
     public MailAccount(){

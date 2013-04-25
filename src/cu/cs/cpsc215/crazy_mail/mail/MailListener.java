@@ -28,7 +28,7 @@ public class MailListener implements TransportListener, ConnectionListener {
     }
     @Override
     public void messageDelivered(TransportEvent te) {
-        System.out.println("Message Delivered");
+        //System.out.println("Message Delivered");
         main.setStatus("Message Delivered");
         if(main!=null){
             final StatusWindow statusWindow = new StatusWindow(main,"Message Delievered :)");

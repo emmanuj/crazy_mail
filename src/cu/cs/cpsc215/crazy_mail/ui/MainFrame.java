@@ -4,7 +4,6 @@ import cu.cs.cpsc215.crazy_mail.MainDriver;
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.contacts.ViewContactsState;
 import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
-import cu.cs.cpsc215.crazy_mail.ui.messages.SendState;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -145,7 +145,7 @@ public class MainFrame extends JFrame{
             
             JPanel n_panel = new JPanel();
             n_panel.setLayout(new FlowLayout(FlowLayout.LEADING));
-            JButton composebtn = new JButton("New");
+            JButton composebtn = new JButton("Compose Message");
             
             composebtn.addActionListener(new ActionListener(){
                 @Override
@@ -158,7 +158,7 @@ public class MainFrame extends JFrame{
             JButton retrievebtn = new JButton("Get");
             
             n_panel.add(composebtn);
-            n_panel.add(retrievebtn);
+            //n_panel.add(retrievebtn);
             
             JPanel c_panel = new JPanel();
             c_panel.setLayout(new BorderLayout());
@@ -182,7 +182,8 @@ public class MainFrame extends JFrame{
                     }
                     
                     if(list.getSelectedIndex() == 2){
-                        switchState(SendState.get());
+                        //switchState(SendState.get());
+                        JOptionPane.showMessageDialog(MainFrame.this, "This feature is not yet available");
                     }
                     
                 }

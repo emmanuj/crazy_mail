@@ -106,11 +106,14 @@ public class Configuration implements Serializable {
         }  
         Configuration other = (Configuration)obj;
         
-    	boolean protocolsEqual,sslTlsEqual;
+    	boolean protocolsEqual,sslTlsEqual,incomingHostEquals,portEquals,hostEquals;
     	protocolsEqual = ( outgoingMail.equals(other.getOutgoingMail()) && incomingMail.equals(other.getIncomingMail()));
     	sslTlsEqual = (useTLS == other.isUseTLS()) && (useSSL == other.isUseSSL());
-    	
-    	return(host.equals(other.getHost()) && port == other.getPort() && protocolsEqual && sslTlsEqual);
+    	incomingHostEquals = (inHost.equals(other.getInHost()));
+        hostEquals = host.equals(other.getHost());
+        portEquals = port == other.getPort();
+        
+    	return(hostEquals && incomingHostEquals && portEquals && protocolsEqual && sslTlsEqual);
 
     }
     

@@ -22,6 +22,7 @@ import javax.swing.JSplitPane;
 
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
+import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
 /**
@@ -182,6 +183,7 @@ public class ViewConfigurationsDlg extends JDialog{
 		
 		//Edit
 		editButton.addActionListener(new ActionListener(){
+                        @Override
 			public void actionPerformed(ActionEvent arg0){
 				int a = accountList.getSelectedIndex();
 				new ConfigurationDlg(t,(MailAccount)accountList.getSelectedValue());

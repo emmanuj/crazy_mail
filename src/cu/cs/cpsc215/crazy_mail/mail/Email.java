@@ -215,23 +215,6 @@ public class Email implements Mail {
                 props.put("mail.transport.protocol","smtp");
         }
         
-        switch(recieveProtocol){
-            case IMAP:
-                props.put("mail.store.protocol",recieveProtocol.value());
-                break;
-            case IMAPS:
-                props.put("mail.store.protocol",recieveProtocol.value());
-                break;
-            case POP3:
-                props.put("mail.store.protocol",recieveProtocol.value());
-                break;
-            case POP3S:
-                props.put("mail.store.protocol",recieveProtocol.value());
-                break;
-            default:
-                props.put("mail.store.protocol","imaps");
-        }
-        
         props.put("mail.from", fromEmail);
         props.put("mail.smtp.host", host);
         

@@ -6,6 +6,7 @@ package cu.cs.cpsc215.crazy_mail.ui.messages;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.ui.FrameState;
+import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
 import java.awt.BorderLayout;
@@ -19,8 +20,10 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.Folder;
@@ -34,10 +37,12 @@ import javax.mail.Store;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -52,10 +57,11 @@ public class InboxState implements FrameState {
     private static InboxState inst;
     private JPanel message_panel;
     private ArrayList<Component> states = new ArrayList();
-    private HashMap<MailAccount, DefaultListModel> account_map = new HashMap();
+    private HashMap<MailAccount, DefaultListModel<Message>> account_map = new HashMap();
     private JComboBox accountsBox;
     private JTextPane textpane;
     private JList messagelist;
+    SwingWorker loadMessageWorker;
     private InboxState(){
         main_panel = new JPanel();
         c_panel = new JPanel();
@@ -74,12 +80,20 @@ public class InboxState implements FrameState {
         main_panel.add(createNorthPanel(account_map),"North");
         
         c_panel.add(messageListView(),BorderLayout.WEST);
-        c_panel.add(message_panel, BorderLayout.CENTER);
+        try {
+            c_panel.add(createMessageViewer(null), BorderLayout.CENTER);
+        } catch (IOException ex) {
+            //c_panel.add(message_panel, BorderLayout.CENTER);
+            Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            //c_panel.add(message_panel, BorderLayout.CENTER);
+            Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         main_panel.add(c_panel, BorderLayout.CENTER);
         
         
-        SwingWorker loadMessageWorker = new SwingWorker(){
+        loadMessageWorker = new SwingWorker(){
 
             @Override
             protected Object doInBackground() throws Exception {
@@ -87,13 +101,9 @@ public class InboxState implements FrameState {
                     Thread t = new Thread(new Runnable(){
                         @Override
                         public void run(){
-                            try {
+                            
                                 loadMessages(account, account_map.get(account));
-                            } catch (NoSuchProviderException ex) {
-                                Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (MessagingException ex) {
-                                Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                           
                         }
                     });
                     
@@ -104,38 +114,8 @@ public class InboxState implements FrameState {
         
         };
         
-        Thread monitor_accounts = new Thread(new Runnable(){
-            @Override
-            public void run(){
-                while(true){
-                    if(dstore.getAccounts().size()>account_map.size()){
-                        //update model
-                        for(final MailAccount account: dstore.getAccounts()){
-                            if(!account_map.containsKey(account)){
-                                account_map.put(account, new DefaultListModel());
-                                accountsBox.addItem(account);
-                                new Thread(new Runnable(){
-                                    @Override
-                                    public void run(){
-                                        try {
-                                            loadMessages(account, account_map.get(account));
-                                        } catch (NoSuchProviderException ex) {
-                                            Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-                                        } catch (MessagingException ex) {
-                                            Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                    }
-                                }).start();
-                                
-                            }
-                        }
-                    }
-                    
-                }
-            }
-        });
         
-        monitor_accounts.start();
+        loadMessageWorker.execute();
         
     }
     
@@ -156,17 +136,17 @@ public class InboxState implements FrameState {
         MailAccount account = (MailAccount) accountsBox.getSelectedItem();
         DefaultListModel model = account_map.get(account);
         
-        if(model==null){
-            messagelist = new JList();
-        }else{
-            messagelist = new JList(model);
-        }
+        messagelist = new JList();
+        messagelist.setModel(model);
+    
         messagelist.setFixedCellHeight(60);
         messagelist.addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 try {
+                    Message msg = (Message)messagelist.getSelectedValue();
+                    //System.out.println(msg.getSubject());
                     textpane.setText(getMessageContent((Message)messagelist.getSelectedValue()));
                 } catch (IOException ex) {
                     Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
@@ -176,6 +156,7 @@ public class InboxState implements FrameState {
             }
         });
         
+        messagelist.setCellRenderer(new MessageListCellRenderer());
         panel.add(new JScrollPane(messagelist));
         
         
@@ -185,6 +166,7 @@ public class InboxState implements FrameState {
     
     public JPanel createMessageViewer(Message message) throws IOException, MessagingException{
         JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
         panel.setBackground(Color.white);
         textpane = new JTextPane();
         textpane.setEditable(false);
@@ -202,31 +184,39 @@ public class InboxState implements FrameState {
         
         return panel;
     }
-    public void loadMessages(MailAccount account, DefaultListModel<Message> model) throws NoSuchProviderException, MessagingException{
+    public synchronized void loadMessages(MailAccount account, DefaultListModel<Message> model) {
+        MainFrame.getInst().setStatus("Downloading messages for "+ account +"...");
         Properties props = System.getProperties();
         
         //create session object from properties file
         Session session = Session.getDefaultInstance(props,null);
-        
-        //get store object
-        Store store = session.getStore(account.getOutgoingMail().value());
-        
-        store.connect(account.getOutHost(), account.getAccountEmail(), account.getAccountPassword());
-        
-        //create folder
-        Folder inbox = store.getFolder("INBOX");
-        
-        inbox.open(Folder.READ_ONLY);
-        
-        Message [] messages = inbox.getMessages();
-        
-        for(Message msg: messages){
-            model.add(0, msg);
+        try {
+            //get store object
+            Store store = session.getStore(account.getIncomingMail().value());
+            store.connect(account.getInHost(), account.getAccountEmail(), account.getAccountPassword());
+            //create folder
+            Folder inbox = store.getFolder("INBOX");
+
+            inbox.open(Folder.READ_ONLY);
+
+            Message [] messages = inbox.getMessages();
+
+            for(Message msg: messages){
+                model.addElement(msg);
+            }
+            
+            
+        } catch (MessagingException ex) {
+            if(!account.getInHost().equals(""))
+                JOptionPane.showMessageDialog(MainFrame.getInst(),"Invalid incoming mail Configuration for mail account: "+ account);
         }
+        MainFrame.getInst().setStatus("Done downloading messages for "+ account);
+        MainFrame.getInst().setStatus("Ready");
     }
     public static String getMessageContent(Message message) throws IOException, MessagingException
       {
         Object content = message.getContent();
+        //System.out.println(content);
         if (content instanceof Multipart) {
             StringBuffer messageContent = new StringBuffer();
             Multipart multipart = (Multipart) content;
@@ -242,7 +232,7 @@ public class InboxState implements FrameState {
             return content.toString();
         }
     }
-    public JPanel createNorthPanel(HashMap<MailAccount, DefaultListModel> accounts){
+    public JPanel createNorthPanel(HashMap<MailAccount, DefaultListModel<Message>> accounts){
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         accountsBox = new JComboBox(accounts.keySet().toArray());
@@ -250,16 +240,62 @@ public class InboxState implements FrameState {
 
             @Override
             public void itemStateChanged(ItemEvent e) {
-                MailAccount account = (MailAccount) accountsBox.getSelectedItem();
+                final MailAccount account = (MailAccount) accountsBox.getSelectedItem();
+                SwingUtilities.invokeLater(new Runnable(){
+                    @Override
+                    public void run(){
+                        messagelist.setModel(account_map.get(account));
+                    }
+                });
                 
-                messagelist.setModel(account_map.get(account));
             }
             
         });
+        
+        
         panel.add(accountsBox);
         
         return panel;
     }
+    
+    public void updateAccountList(final ArrayList<MailAccount>oldAccounts, final ArrayList<MailAccount> accounts){
+       Set<MailAccount> stored = account_map.keySet();
+      
+       for(int i = 0; i<oldAccounts.size(); i++)
+       {
+           MailAccount old = oldAccounts.get(i);
+           if(!accounts.contains(old))
+           {
+               oldAccounts.remove(i);
+               account_map.remove(old);
+               accountsBox.removeItem(old);
+               accountsBox.removeItem(old);
+               i--;
+           }
+       }
+       
+       for(int i = 0; i<accounts.size(); i++)
+       {
+           if(!stored.contains(accounts.get(i)));
+           {
+               final MailAccount account = accounts.get(i);
+                account_map.put(account, new DefaultListModel());
+                accountsBox.addItem(account);
+               new Thread(new Runnable(){
+                                    @Override
+                                    public void run(){
+                                        
+                                            loadMessages(account, account_map.get(account));
+                                        
+                                    }
+                                }).start();
+           }
+       }
+       //main_panel.validate();
+       accountsBox.validate();
+       MainFrame.getInst().repaint();
+    }
+    
     @Override
     public void onHide() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -267,7 +303,7 @@ public class InboxState implements FrameState {
 
     @Override
     public void onShow() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //updateAccountList();
     }
 
     @Override

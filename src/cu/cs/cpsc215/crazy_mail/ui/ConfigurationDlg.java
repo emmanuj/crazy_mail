@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import cu.cs.cpsc215.crazy_mail.data.DataStore;
+import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
