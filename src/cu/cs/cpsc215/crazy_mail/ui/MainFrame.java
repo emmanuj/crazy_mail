@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -133,6 +134,8 @@ public class MainFrame extends JFrame{
 	    panel.setLayout(new FlowLayout(FlowLayout.LEADING));
             panel.setPreferredSize(new Dimension(this.getWidth(), 55));
 	    statuslabel = new JLabel("Ready");
+
+	    statuslabel.setFont(new Font("Sans Serif",Font.PLAIN,14));
 	    panel.add(statuslabel);
 	    
 	    return panel;
