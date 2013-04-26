@@ -118,12 +118,14 @@ public class MainFrame extends JFrame{
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
         leftPanel = createSidePane();
+        leftPanel.setSize(200,200);
 		footerPanel = createStatusPane();
 		mainPanel.setBorder(new LineBorder(Color.DARK_GRAY));
                 makeMenu();
 		
 		//Positioning
 		add(leftPanel, "West");
+		
 		add(footerPanel,BorderLayout.SOUTH);
 		add(mainPanel,BorderLayout.CENTER);
 		add(mainMenu,BorderLayout.NORTH);

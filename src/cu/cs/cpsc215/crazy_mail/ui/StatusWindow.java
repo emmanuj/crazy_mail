@@ -75,6 +75,5 @@ public class StatusWindow extends JWindow {
         setVisible(true);
         
     }
-    
-    
+
 }

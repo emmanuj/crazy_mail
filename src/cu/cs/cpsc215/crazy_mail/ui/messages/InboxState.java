@@ -140,11 +140,12 @@ public class InboxState implements FrameState {
 	        messagelist = new JList();
 	        messagelist.setModel(model);
 	    
-	        messagelist.setFixedCellHeight(60);
+	        messagelist.setFixedCellHeight(70);
 	        messagelist.addListSelectionListener(new ListSelectionListener() {
 	
 	            @Override
 	            public void valueChanged(ListSelectionEvent e) {
+
 	                if(!e.getValueIsAdjusting()){
                             try {
                                 Message msg = (Message)messagelist.getSelectedValue();
@@ -155,6 +156,7 @@ public class InboxState implements FrameState {
                                 Logger.getLogger(InboxState.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
+
 	            }
 	        });
 	        
@@ -235,8 +237,13 @@ public class InboxState implements FrameState {
             for (int i = 0; i < multipart.getCount(); i++) {
                 Part part = (Part) multipart.getBodyPart(i);
                 if (part.isMimeType("text/html")||part.isMimeType("text/plain")) {
+
                     if(!messageContent.toString().contains(part.getContent().toString()))
                         messageContent.append(part.getContent().toString());
+                }
+                else
+                {
+                	messageContent.append("<html><span style='color:red;'>Could not display Mime Type: "+part.getContentType()+"<br/></span></html>");
                 }
                 
             }
