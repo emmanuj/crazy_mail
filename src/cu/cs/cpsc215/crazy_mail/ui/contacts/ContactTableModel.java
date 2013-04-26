@@ -10,6 +10,7 @@ import cu.cs.cpsc215.crazy_mail.data.DataStore;
 /**
 * Class to model the contact table
 * @author Kevin Jett
+* @Author Emmanuel John
 * 
 */
 public class ContactTableModel extends AbstractTableModel {

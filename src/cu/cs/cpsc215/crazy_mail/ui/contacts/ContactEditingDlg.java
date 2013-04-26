@@ -20,7 +20,7 @@ import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
 
 /**
- * 
+ * @Author Emmanuel John
  * @author Kevin Jett
 */
 

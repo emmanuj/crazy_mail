@@ -3,7 +3,9 @@ package cu.cs.cpsc215.crazy_mail.data;
 /**
 * 
 * @Author Emmanuel John
-*
+* @Author Kevin Jett
+* 
+* Represents a contact entity (a person)
 */
 
 import java.io.Serializable;

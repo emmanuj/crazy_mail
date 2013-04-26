@@ -31,6 +31,7 @@ import cu.cs.cpsc215.crazy_mail.ui.MainFrame;
 * 
 * State for viewing contacts.
 * @author Kevin Jett
+* @Author Emmanuel John
 * 
 */
 public class ViewContactsState implements FrameState{

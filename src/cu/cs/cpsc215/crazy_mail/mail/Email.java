@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMessage;
 /**
  *
  * @author Emmanuel John
- * 
+ * @Author Kevin Jett
  * Represents a mail object e.g file, image etc
  */
 public class Email implements Mail {

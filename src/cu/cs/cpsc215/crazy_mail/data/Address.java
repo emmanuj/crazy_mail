@@ -4,6 +4,8 @@ package cu.cs.cpsc215.crazy_mail.data;
  *
  * @author Kevin Jett
  * @author Emmanuel John
+ * 
+ * Represents the address of a contact
 */
 import java.io.Serializable;
 

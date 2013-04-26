@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 /**
  *
  * @author Emmanuel John
+ * @Author Kevin Jett
  * 
  */
 public class MessageListCellRenderer implements ListCellRenderer {

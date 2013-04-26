@@ -8,7 +8,8 @@ import java.io.File;
 
 /**
  *
- * @author Hermoine
+ * @Author Kevin Jett
+ * @AuthorEmmanuel John
  */
 public final class EmailAttachment {
     private String name;

@@ -16,7 +16,11 @@ import javax.mail.event.TransportListener;
 
 /**
  * 
- * @author Emmanuel
+ * @author Emmanuel John
+ * @Author Kevin Jett
+ * 
+ * Represents both the connection and transport listener to track what happens when a message is sent.
+ * 
  */
 public class MailListener implements TransportListener, ConnectionListener {
     private MainFrame main;

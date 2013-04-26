@@ -24,8 +24,11 @@ import cu.cs.cpsc215.crazy_mail.util.Protocol;
 import cu.cs.cpsc215.crazy_mail.util.Validator;
 
 /**
- * 
+ * @Author Emmanuel John
  * @author Kevin Jett
+ * 
+ * Add new Configuration dialog
+ * 
 */
 
 public class ConfigurationDlg extends JDialog {

@@ -6,6 +6,7 @@ import java.io.Serializable;
 /**
  *
  * @author Emmanuel John
+ * @Author Kevin Jett
  * Maintains configuration information about the user's system
  * 
  */

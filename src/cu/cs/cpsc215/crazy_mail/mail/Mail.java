@@ -11,7 +11,7 @@ import javax.mail.internet.AddressException;
 /**
  *
  * @author Emmanuel John
- * 
+ * @Author Kevin Jett
  * Represents a single mail
  * 
  * 
