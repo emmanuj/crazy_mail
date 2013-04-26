@@ -60,7 +60,9 @@ public class InboxState implements FrameState {
     private JTextPane textpane;
     private JList messagelist;
     SwingWorker loadMessageWorker;
-    private InboxState(){
+    
+    private InboxState()
+    {
         main_panel = new JPanel();
         c_panel = new JPanel();
         message_panel = new JPanel();
@@ -90,9 +92,7 @@ public class InboxState implements FrameState {
         
         main_panel.add(c_panel, BorderLayout.CENTER);
         
-        
         loadMessageWorker = new SwingWorker(){
-
             @Override
             protected Object doInBackground() throws Exception {
                 for(final MailAccount account: account_map.keySet()){
@@ -109,9 +109,7 @@ public class InboxState implements FrameState {
                 }
                 return null;
             }
-        
         };
-        
         
         loadMessageWorker.execute();
         
@@ -231,13 +229,15 @@ public class InboxState implements FrameState {
     	
         Object content = message.getContent();
 
-        if (content instanceof Multipart) {
+        if (content instanceof Multipart)
+        {
             StringBuffer messageContent = new StringBuffer();
             Multipart multipart = (Multipart) content;
-            for (int i = 0; i < multipart.getCount(); i++) {
+            for (int i = 0; i < multipart.getCount(); i++)
+            {
                 Part part = (Part) multipart.getBodyPart(i);
-                if (part.isMimeType("text/html")||part.isMimeType("text/plain")) {
-
+                if (part.isMimeType("text/html")||part.isMimeType("text/plain")) 
+                {
                     if(!messageContent.toString().contains(part.getContent().toString()))
                         messageContent.append(part.getContent().toString());
                 }
@@ -248,7 +248,9 @@ public class InboxState implements FrameState {
                 
             }
             return messageContent.toString();
-        } else {
+        } 
+        else
+        {
             return content.toString();
         }
     }
@@ -259,7 +261,8 @@ public class InboxState implements FrameState {
         accountsBox.addItemListener(new ItemListener(){
 
             @Override
-            public void itemStateChanged(ItemEvent e) {
+            public void itemStateChanged(ItemEvent e) 
+            {
                 final MailAccount account = (MailAccount) accountsBox.getSelectedItem();
                 SwingUtilities.invokeLater(new Runnable(){
                     @Override

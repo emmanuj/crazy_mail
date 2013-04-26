@@ -24,8 +24,8 @@ import javax.swing.border.EmptyBorder;
  */
 public class MessageListCellRenderer implements ListCellRenderer {
     protected static Border noFocusBorder = new EmptyBorder(15, 1, 1, 1);
-
     protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+    
     @Override
     public Component getListCellRendererComponent(JList list, Object ovalue, int index, boolean isSelected, boolean cellHasFocus) {
         
