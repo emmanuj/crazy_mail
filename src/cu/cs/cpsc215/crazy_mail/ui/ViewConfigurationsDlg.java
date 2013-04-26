@@ -26,8 +26,10 @@ import cu.cs.cpsc215.crazy_mail.ui.messages.InboxState;
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 
 /**
- *
+ * @Author Emmanuel John
  * @author Kevin Jett
+ * 
+ * The user interface that display mail accounts
 */
 
 public class ViewConfigurationsDlg extends JDialog{

@@ -14,8 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 /**
- * 
+ * @Author Emmanuel John
  * @author Kevin Jett
+ * 
+ * The About Dialog
 */
 
 public class SystemInformationDlg extends JDialog {
@@ -48,6 +50,7 @@ public class SystemInformationDlg extends JDialog {
 		
 		final SystemInformationDlg t = this;
 		doneButton.addActionListener(new ActionListener(){
+                        @Override
 			public void actionPerformed(ActionEvent arg0) {
 				t.dispose();
 			}

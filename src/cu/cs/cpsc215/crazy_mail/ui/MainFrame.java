@@ -42,6 +42,8 @@ import javax.swing.event.ListSelectionListener;
  * @author Kevin Jett
  * @author Emmanuel John
  * 
+ * The Parent frame of the mail client
+ * 
  */
 public class MainFrame extends JFrame{
 	

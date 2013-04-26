@@ -8,7 +8,7 @@ import cu.cs.cpsc215.crazy_mail.data.DataStore;
 import cu.cs.cpsc215.crazy_mail.mail.Email;
 import cu.cs.cpsc215.crazy_mail.mail.EmailAttachment;
 import cu.cs.cpsc215.crazy_mail.mail.MailListener;
-import cu.cs.cpsc215.crazy_mail.mail.MultiPartEmail;
+
 import cu.cs.cpsc215.crazy_mail.util.MailAccount;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -42,6 +42,8 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Emmanuel John
  * @author Kevin Jett
+ * 
+ * The compose Dialog
  */
 public class EmailTransmissionDlg extends JDialog {
 	private static final long serialVersionUID = -6150072287819513573L;

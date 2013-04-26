@@ -20,8 +20,11 @@ import javax.swing.JWindow;
 import net.miginfocom.swing.MigLayout;
 
 /**
- *
+ * @Author Kevin Jett
  * @author Emmanuel
+ * 
+ * This class is a user interface that is displayed when a message is delivered
+ * 
  */
 public class StatusWindow extends JWindow {
 
@@ -73,7 +76,5 @@ public class StatusWindow extends JWindow {
         
     }
     
-    public static void main(String args[]){
-       // new StatusWindow();
-    }
+    
 }

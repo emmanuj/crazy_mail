@@ -6,7 +6,7 @@ import javax.swing.JPanel;
  * Interface for the visual states in the program.
  * 
  * @author Kevin
- *
+ * @Author Emmanuel John
  */
 public interface FrameState{
 	public void onHide(); //Performed when the state is switched out

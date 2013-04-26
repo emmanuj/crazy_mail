@@ -3,6 +3,7 @@ package cu.cs.cpsc215.crazy_mail.ui;
 import javax.swing.JComponent;
 
 /**
+ * @Author Emmanuel John
  * @author Kevin Jett
  * Mediator for add-edit-delete button combinations. 
 */

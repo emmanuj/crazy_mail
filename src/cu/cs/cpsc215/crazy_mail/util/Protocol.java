@@ -6,7 +6,10 @@ package cu.cs.cpsc215.crazy_mail.util;
 
 /**
  *
- * @author Hermoine
+ * @author Emmanuel John
+ * @author Kevin Jett
+ * 
+ * An enum class that represents available mail protocols
  */
 public enum Protocol {
     /**

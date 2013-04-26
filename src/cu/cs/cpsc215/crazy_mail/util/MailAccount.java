@@ -6,6 +6,8 @@ import java.io.Serializable;
 /**
  *
  * @author Emmanuel John
+ * @Author Kevin Jett
+ * 
  * Represents User email accounts
  * 
  */
